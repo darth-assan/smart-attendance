@@ -1,0 +1,33 @@
+{
+  "name": "verification-using-fingerprint",
+  "version": "1.0.0",
+  "description": "This project is aimed at using fingerprint sensors of smart devices to authenticate yourself as present at a lecture.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arthur-assan/Verification-using-fingerprint.git"
+  },
+  "keywords": [
+    "fingerprint",
+    "android",
+    "fingerprint",
+    "authentication",
+    "attendance",
+    "fingerprint",
+    "sensor"
+  ],
+  "author": "David Arthur",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arthur-assan/Verification-using-fingerprint/issues"
+  },
+  "homepage": "https://github.com/arthur-assan/Verification-using-fingerprint#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.4.13",
+    "pug": "^2.0.3"
+  }
+}
