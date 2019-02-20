@@ -26,8 +26,9 @@
   },
   "homepage": "https://github.com/arthur-assan/Verification-using-fingerprint#readme",
   "dependencies": {
+    "ejs": "^2.6.1",
     "express": "^4.16.4",
-    "mongoose": "^5.4.13",
-    "pug": "^2.0.3"
+    "express-ejs-layouts": "^2.5.0",
+    "mongoose": "^5.4.13"
   }
 }

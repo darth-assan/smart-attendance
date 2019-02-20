@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const config = require('./config/database')
+const expressLayouts = require('express-ejs-layouts');
 
 mongoose.connect(config.database);
 let db = mongoose.connection;
@@ -19,9 +20,11 @@ db.on('error',function(err){
 // Init App
 const app = express();
 
+app.use(expressLayouts);
+
 // Load View Engine
 app.set('views',path.join(__dirname,'views'));
-app.set('view engine','pug');
+app.set('view engine','ejs');
 
 //Set public folder
 app.use(express.static(path.join(__dirname,'public')));
@@ -34,8 +37,10 @@ app.get('/',(req,res)=>{
     });
 
 // Route Files
+let students = require('./routes/students.js');
 let courses = require('./routes/courses.js');
-app.use('/courses', courses);
+app.use('/student', students);
+app.use('/course', courses);
 
 // Start Server
 app.listen(3000,()=>{
