@@ -1,0 +1,25 @@
+doctype html
+html
+    title #{title} | itendax 
+    link(rel="stylesheet" href="/bootstrap/dist/css/boostrap.min.css")
+    link(rel="stylesheet" href="/vendor/css/dashboard.css")
+    link(rel="stylesheet" href="/vendor/css/tabler.css")
+body
+    .page
+        .page-single
+            .container
+                .row
+                    .col.col-login.mx-auto
+                        .text-center.mb-6
+                            img.h-7(src='/vendor/images/itendax@2x.png' alt='itendax')
+                        form.card(method='POST', action='/users/login')
+                            .card-body.p-6
+                                .card-title Login to your account
+                                .form-group
+                                    label.form-label Email address
+                                    input.form-control(name='username',type='text',placeholder='Enter Email' )
+                                .form-group
+                                    label.form-label Password
+                                    input.form-control(name='password',type='password',placeholder='Enter Password')
+                                .form-footer
+                                    button.btn.btn-success.btn-block(type='submit') Sign in

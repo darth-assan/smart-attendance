@@ -1,0 +1,10 @@
+extends layout
+
+block content 
+    ul  
+        each course,i in courses
+            li= course.title
+            li= course.venue
+            li= course.code
+            li= course.duration
+            | ------------------
