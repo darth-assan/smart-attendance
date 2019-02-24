@@ -78,7 +78,9 @@ app.get('/',(req,res)=>{
 
 // Route Files
 let users = require('./routes/users');
+let courses = require('./routes/courses');
 app.use('/users', users);
+app.use('/courses',courses);
 
 // Start Server
 app.listen(3000,()=>{

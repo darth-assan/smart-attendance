@@ -1,10 +1,47 @@
 extends layout
 
 block content 
-    ul  
-        each course,i in courses
-            li= course.title
-            li= course.venue
-            li= course.code
-            li= course.duration
-            | ------------------
+    .my-3.my-md-5   
+        .container  
+            .page-header
+                .page-title
+                    h1 Dashboard
+            .row
+                .col-sm-6.col-lg-5
+                    .card.p-3
+                        .d-flex.align-items-center
+                            .stamp.stamp-md.bg-red.mr-3
+                                i.fe.fe-file
+                            div
+                                h4.m-0
+                                    small Available Lectures
+                                    |   today 
+                                small.text-muted 21/02/2019
+
+                    each course,i in courses
+                        .col-lg-12
+                            .card.card-aside
+                                a.card-aside-column.code(href="/courses/"+course._id style='background-color: cyan')= course.code
+                                .card-body.d-flex.flex-column
+                                    h5
+                                        a(href="/courses/"+course._id)= course.title
+                                    .text-muted.row
+
+                                        .text-center
+                                            i.fe.fe-map-pin
+                                            span=   course.venue
+                                        .ml-4
+                                            i.fe.fe-watch
+                                            span=   course.duration
+
+                .col-sm-6.col-lg-7
+                    .card.p-3
+                        .d-flex.align-items-center
+                            .stamp.stamp-md.bg-yellow.mr-3
+                                i.fe.fe-list
+                            div
+                                h4.m-0
+                                    a(href='javascript:void(0)')
+                                        small Available Lectures
+                                        |   for the week
+

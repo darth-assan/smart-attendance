@@ -1,0 +1,74 @@
+extends layout
+
+block content 
+    .my-3.my-md-5   
+        .container  
+            .page-header
+                .page-title
+                    h1 Attendance Session
+            .row
+                .col-12
+                    .card.p-3
+                        .d-flex.align-items-center
+                            .stamp.stamp-md.bg-blue.mr-3
+                                i.fe.fe-paperclip
+                            div
+                                h4.m-0
+                                    small= course.code
+                                    div= course.title
+            .row.row-cards.row-deck
+                .col-sm-4
+                    .card
+                        .card-body.text-center
+                            .display-4.font-weight-bold.mb-4.text-green 29
+                            .h5 Students are enrolled in this course
+                .col-sm-4
+                    .card
+                        .card-body.text-center
+                            .display-4.font-weight-bold.mb-4.text-green 5 out of 13
+                            .progress.progress-sm.mb-3
+                                .progress-bar.bg-green(style='width: 45%')
+                            h5 Weeks of lectures
+                .col-sm-4
+                    .card
+                        .card-header
+                            h2.card-title.font-weight-bold Recent Reports
+                        table.table.card-table
+                            tr
+                                td 
+                                    div First Week -
+                                        small   02/02/2019
+                            tr
+                                td 
+                                    div Second Week -
+                                        small   02/02/2019
+                            tr
+                                td 
+                                    div Third Week -
+                                        small   02/02/2019
+
+                .col-lg-12
+                    .card
+                        .card-header
+                            h3.card-title Ongoing Session
+                        .table-responsive
+                            table.table.card-table.table-striped.table-vcenter
+                                thread
+                                    tr 
+                                        th Student ID
+                                        th Name
+                                        th Timestamp
+                                tbody
+                                    tr
+                                        td 10145698
+                                        td Ronald Bradley
+                                        td.text-nowrap May 6, 2018
+                                    tr
+                                        td 10145698
+                                        td Ronald Bradley
+                                        td.text-nowrap May 6, 2018
+                                    tr
+                                        td 10145698
+                                        td Ronald Bradley
+                                        td.text-nowrap May 6, 2018
+            
