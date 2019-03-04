@@ -1,18 +1,88 @@
 extends layout
 
 block content
-    h1 Register
-    form(method="POST", action="/users/register")
-        label Email:
-        input(name='email',type='email')
-        label Firstname:
-        input(name='fname',type='text')
-        label Lastname:
-        input(name='lname',type='text')
-        label Password:
-        input(name='password',type='password')
-        label Confirm Password:
-        input(name='password2',type='password')
-        br
-        input(type="submit",value="Submit")
+    .my-3.my-md-5 
+        .container
+            h1 Register
+            .row
+                .col-md-6
+                    form.card(method="POST", action="/users/register")
+                        .card-body
+                            h3.card-title Add User
+                            .row
+                                .col-md-12
+                                        .form-group
+                                            label.form-label Name
+                                            input.form-control(name='name', type='text', placeholder='Enter your name')
+                                .col-md-12
+                                        .form-group
+                                            label.form-label Email Address
+                                            input.form-control(name='email', type='email', placeholder='Email')
+                                .col-md-12
+                                        .form-group
+                                            label.form-label Password
+                                            input.form-control(name='password', type='password', placeholder='Enter current password')
+                                .col-md-12
+                                        .form-group
+                                            label.form-label Confirm Password
+                                            input.form-control(name='password2', type='password', placeholder='Confirm password', )
+                                .col-md-12
+                                        .form-group
+                                            label.form-label Select Your Courses
+                                            .selectgroup.selectgroup-pills
+                                                label.selectgroup-item
+                                                    input.selectgroup-input(type='checkbox', name='value', value='HTML', checked='')
+                                                    span.selectgroup-button HTML
+                                                label.selectgroup-item
+                                                    input.selectgroup-input(type='checkbox', name='value', value='CSS')
+                                                    span.selectgroup-button CSS
+                                                label.selectgroup-item
+                                                    input.selectgroup-input(type='checkbox', name='value', value='PHP')
+                                                    span.selectgroup-button PHP
+                                                label.selectgroup-item
+                                                    input.selectgroup-input(type='checkbox', name='value', value='JavaScript')
+                                                    span.selectgroup-button JavaScript
+                                                label.selectgroup-item
+                                                    input.selectgroup-input(type='checkbox', name='value', value='Ruby')
+                                                    span.selectgroup-button Ruby
+                                                label.selectgroup-item
+                                                    input.selectgroup-input(type='checkbox', name='value', value='Ruby')
+                                                    span.selectgroup-button Ruby
+                                                label.selectgroup-item
+                                                    input.selectgroup-input(type='checkbox', name='value', value='C++')
+                                                    span.selectgroup-button C++
+                        .card-footer.text-center
+                            button.btn.btn-success(type='submit') Add User
+
+                .col-md-6
+                    form.card(method="POST", action="/courses/register")
+                        .card-body
+                            h3.card-title Add Course
+                            .row
+                                .col-md-12
+                                        .form-group
+                                            label.form-label  Code 
+                                            input.form-control(name='code', type='text')
+                                .col-md-12
+                                        .form-group
+                                            label.form-label  Title
+                                            input.form-control(name='title', type='text')
+                                .col-md-12
+                                        .form-group
+                                            label.form-label Duration
+                                            input.form-control(name='duration', type='text')
+                                .col-md-12
+                                        .form-group
+                                            label.form-label Time 
+                                            input.form-control(name='time', type='text')
+                                .col-md-12
+                                        .form-group
+                                            label.form-label Venue 
+                                            input.form-control(name='venue', type='text')
+                                .col-md-12
+                                        .form-group
+                                            label.form-label Day
+                                            input.form-control(name='day', type='text')
+                        .card-footer.text-center
+                            button.btn.btn-success(type='submit') Add Course
         

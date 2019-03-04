@@ -4,9 +4,11 @@ const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator/check');
 const passport = require('passport');
 
+
 // bring in user model
 let User = require('../models/user');
 let Course = require('../models/course');
+
 
 // Login Process
 router.post('/login',function(req,res,next){
@@ -25,8 +27,7 @@ router.get('/register',function(req,res){
 // Register Process
 router.post('/register',[
     check('email').isEmail(),
-    check('fname').isAlpha(),
-    check('lname').isAlpha(),
+    check('name').isString(),
     check('password').isLength({min:5}),
     check('password2')
         .isLength({min:5})
@@ -44,16 +45,14 @@ router.post('/register',[
     }
 
     const email = req.body.email;
-    const firstname = req.body.fname;
-    const lastname = req.body.lname;
+    const name = req.body.name;
     const password = req.body.password;
 
 
 let newUser = new User({
     email:email,
-    firstname:firstname,
-    lastname:lastname,
-    password:password,
+    name:name,
+    password:password
 });
 
 bcrypt.genSalt(10,function(err,salt){
@@ -77,15 +76,76 @@ bcrypt.genSalt(10,function(err,salt){
 
 // Get user dashboard
 router.get('/dashboard',(req,res)=>{
-    Course.find({},(err,data)=>{
-        if(err){
-            console.log(err);
-        }else{
-            res.render('dashboard',{
-                courses:data
+    switch (new Date().getDay()) {
+        case 1:
+            Course.find({day:"Monday"},(err,data)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    res.render('dashboard',{
+                        courses:data
+                    });
+                };
             });
-        };
-    });
+            break;
+        case 2:
+            Course.find({day:"Tuesday"},(err,data)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    res.render('dashboard',{
+                        courses:data
+                    });
+                };
+            });
+        case 3:
+            Course.find({day:"Wednesday"},(err,data)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    res.render('dashboard',{
+                        courses:data
+                    });
+                };
+            });
+            break;
+        case 4:
+            Course.find({day:"Thursday"},(err,data)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    res.render('dashboard',{
+                        courses:data
+                    });
+                };
+            });
+        case 5:
+            Course.find({day:"Friday"},(err,data)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    res.render('dashboard',{
+                        courses:data
+                    });
+                };
+            });
+        default:
+            Course.find({ day: { $exists: false } } ,(err)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    res.render('error',{
+                        msg:"No Courses Available on this day!!"
+                    });
+                };
+            });
+
+    };
 });
+
+// Profile
+router.get('/profile',(req,res)=>{
+    res.render('profile');
+})
 
 module.exports = router;

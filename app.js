@@ -27,6 +27,14 @@ db.on('error',function(err){
 // Init App
 const app = express();
 
+// Middleware to get the current day
+// var dateTime = function (req, res, next) {
+//     req.dateTime = new Date().getDay();
+//     next()
+//   }
+
+// app.use(dateTime);
+
 // Body Parser Middleware
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));

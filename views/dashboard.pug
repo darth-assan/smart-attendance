@@ -1,6 +1,6 @@
 extends layout
 
-block content 
+block content
     .my-3.my-md-5   
         .container  
             .page-header
@@ -33,6 +33,7 @@ block content
                                         .ml-4
                                             i.fe.fe-watch
                                             span=   course.duration
+            
 
                 .col-sm-6.col-lg-7
                     .card.p-3
@@ -41,7 +42,61 @@ block content
                                 i.fe.fe-list
                             div
                                 h4.m-0
-                                    a(href='javascript:void(0)')
-                                        small Available Lectures
-                                        |   for the week
+                                    small Available Lectures
+                                    |   for the week
+                    .card
+                        .card-status.bg-blue
+                        .card-header
+                            h3.card-title Monday
+                            .card-options
+                                    a.card-options-collapse(href='#', data-toggle='card-collapse')
+                                        i.fe.fe-chevron-up
+                                    a.card-options-remove(href='#', data-toggle='card-remove')
+                                        i.fe.fe-x
+                        .card-body
+                            .table-responsive
+                                table.table.card-table.table-striped.table-vcenter
+                                    thead
+                                        tr
+                                            th Code 
+                                            th Course Title
+                                            th Duration
+                                            th Time
+                                    tbody
+                                        each course,i in courses
+                                            -if(course.day === 'Monday')
+                                                tr
+                                                    td= course.code
+                                                    td= course.title
+                                                    td= course.duration
+                                                    td= course.time
+                                                        
+                    .card
+                        .card-status.bg-yellow
+                        .card-header
+                            h3.card-title Tuesday
+                            .card-options
+                                    a.card-options-collapse(href='#', data-toggle='card-collapse')
+                                        i.fe.fe-chevron-up
+                                    a.card-options-remove(href='#', data-toggle='card-remove')
+                                        i.fe.fe-x
+                        .card-body
+                            .table-responsive
+                                table.table.card-table.table-striped.table-vcenter
+                                    thead
+                                        tr
+                                            th Code 
+                                            th Course Title
+                                            th Duration
+                                            th Time
+                                    tbody
+                                        each course,i in courses
+                                            -if(course.day === 'Tuesday')
+                                                tr
+                                                    td= course.code
+                                                    td= course.title
+                                                    td= course.duration
+                                                    td= course.time 
+                                       
+
 

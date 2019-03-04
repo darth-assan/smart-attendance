@@ -14,21 +14,19 @@ block content
                                 i.fe.fe-paperclip
                             div
                                 h4.m-0
-                                    small= course.code
-                                    div= course.title
+                                    small course.code
+                                    div course.title
             .row.row-cards.row-deck
                 .col-sm-4
                     .card
                         .card-body.text-center
-                            .display-4.font-weight-bold.mb-4.text-green 29
+                            .display-4.font-weight-bold.mb-4.text-green course.details.students
                             .h5 Students are enrolled in this course
                 .col-sm-4
                     .card
                         .card-body.text-center
-                            .display-4.font-weight-bold.mb-4.text-green 5 out of 13
-                            .progress.progress-sm.mb-3
-                                .progress-bar.bg-green(style='width: 45%')
-                            h5 Weeks of lectures
+                            .display-4.font-weight-bold.mb-4.text-green course.details.weeks
+                            h5 out of 13 Weeks
                 .col-sm-4
                     .card
                         .card-header

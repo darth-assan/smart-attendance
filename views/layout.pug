@@ -12,7 +12,7 @@ body
             .header.py-4
                 .container
                     .d-flex
-                        a.header-brand(href='index.html')
+                        a.header-brand(href='/users/dashboard')
                             img.header-brand-img(src='/vendor/images/itendax@2x.png' alt='itendax')
                         .d-flex.order-lg-2.ml-auto
                             .dropdown
@@ -20,16 +20,12 @@ body
                                     span.avatar(style='background-image: url(/vendor/images/1.jpg)')
                                     span.ml-2.d-none.d-lg-block
                                         span.text-default Assan Arthur
-                                        small.text-muted.d-block.mt-1 Administrator
                                 .dropdown-menu.dropdown-menu-right.dropdown-menu-arrow
-                                    a.dropdown-item(href='#')
+                                    a.dropdown-item(href='/users/profile')
                                         i.dropdown-icon.fe.fe-user
-                                        |  Profile
+                                        |   Profile
                                     .dropdown-divider
-                                    a.dropdown-item(href='#')
-                                        i.dropdown-icon.fe.fe-help-circle
-                                        |  Need help?
-                                    a.dropdown-item(href='#')
+                                    a.dropdown-item(href='/users/signout')
                                         i.dropdown-icon.fe.fe-log-out
                                         |  Sign out
                         a.header-toggler.d-lg-none.ml-3.ml-lg-0(href='#' data-toggle='collapse' data-target='#headerMenuCollapse')
@@ -37,36 +33,31 @@ body
             #headerMenuCollapse.header.collapse.d-lg-flex.p-0
                 .container
                     .row.align-items-center
-                        .col-lg-2.text-lg-right
-                            label.custom-switch
-                                input.custom-switch-input(type='checkbox' name='custom-switch-checkbox')
-                                span.custom-switch-indicator
-                                span.custom-switch-description Enable Wi-Fi
+                        //- .col-lg-2.text-lg-right
+                        //-     label.custom-switch
+                        //-         input.custom-switch-input(type='checkbox' name='custom-switch-checkbox')
+                        //-         span.custom-switch-indicator
+                        //-         span.custom-switch-description Enable Wi-Fi
                         .col-lg.order-lg-first
                             ul.nav.nav-tabs.border-0.flex-column.flex-lg-row
                                 li.nav-item
-                                    a.nav-link.active(href='index.html')
+                                    a.nav-link.active(href='/users/dashboard')
                                         i.fe.fe-home
                                         |  Home
                                 li.nav-item
-                                    a.nav-link(href='registeration.html')
+                                    a.nav-link(href='/users/register')
                                         i.fe.fe-check-square
                                         | Registeration
                                 li.nav-item.dropdown
-                                    a.nav-link(href='404.html')
+                                    a.nav-link(href='#')
                                         i.fe.fe-calendar
-                                        | Statistics
-                                li.nav-item.dropdown
-                                    a.nav-link(href='session.html')
-                                        i.fe.fe-file
-                                        | Attendance
-                                        | Sessions
-                                li.nav-item.dropdown
-                                    a.nav-link(href='enrollment.html')
-                                        i.fe.fe-user-plus
-                                        | Enrollments
-        
+                                        | Report
+                               
             block content
         include includes/footer.pug
     
-        
+script(src="/vendor/js/vendors/jquery-3.2.1.min.js")
+script(src="/vendor/js/vendors/bootstrap.bundle.min.js")
+script(src="/vendor/js/core.js")
+script(src="/vendor/js/dashboard.js")
+script(src="/vendor/js/require.min.js")      
