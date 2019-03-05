@@ -1,7 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const config = require('../config/database');
 
 
 module.exports = function (passport) {
@@ -21,7 +20,7 @@ module.exports = function (passport) {
             if(isMatch){
                 return done(null, user);
             }else{
-              console.log('something happened')
+                console.log('Password Incorrect')
             }
         })
     })

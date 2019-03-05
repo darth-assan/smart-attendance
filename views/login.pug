@@ -4,6 +4,7 @@ html
     link(rel="stylesheet" href="/bootstrap/dist/css/boostrap.min.css")
     link(rel="stylesheet" href="/vendor/css/dashboard.css")
     link(rel="stylesheet" href="/vendor/css/tabler.css")
+    link(rel="stylesheet" href="style.css")
 body
     .page
         .page-single
@@ -14,7 +15,8 @@ body
                             img.h-7(src='/vendor/images/itendax@2x.png' alt='itendax')
                         form.card(method='POST', action='/users/login')
                             .card-body.p-6
-                                .card-title Login to your account
+                                .card-title.text-center Login to your account
+                                != messages('message',locals)
                                 .form-group
                                     label.form-label Email address
                                     input.form-control(name='username',type='text',placeholder='Enter Email' )
@@ -23,3 +25,9 @@ body
                                     input.form-control(name='password',type='password',placeholder='Enter Password')
                                 .form-footer
                                     button.btn.btn-success.btn-block(type='submit') Sign in
+
+    script(src="/vendor/js/vendors/jquery-3.2.1.min.js")
+    script(src="/vendor/js/vendors/bootstrap.bundle.min.js")
+    script(src="/vendor/js/core.js")
+    script(src="/vendor/js/dashboard.js")
+    script(src="/vendor/js/require.min.js")     

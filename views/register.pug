@@ -4,6 +4,7 @@ block content
     .my-3.my-md-5 
         .container
             h1 Register
+            != messages('message',locals)
             .row
                 .col-md-6
                     form.card(method="POST", action="/users/register")
@@ -31,26 +32,20 @@ block content
                                             label.form-label Select Your Courses
                                             .selectgroup.selectgroup-pills
                                                 label.selectgroup-item
-                                                    input.selectgroup-input(type='checkbox', name='value', value='HTML', checked='')
-                                                    span.selectgroup-button HTML
+                                                    input.selectgroup-input(type='checkbox', name='value', value='CSIT 402')
+                                                    span.selectgroup-button CSIT 402
                                                 label.selectgroup-item
-                                                    input.selectgroup-input(type='checkbox', name='value', value='CSS')
-                                                    span.selectgroup-button CSS
+                                                    input.selectgroup-input(type='checkbox', name='value', value='CSIT 404')
+                                                    span.selectgroup-button CSIT 404
                                                 label.selectgroup-item
-                                                    input.selectgroup-input(type='checkbox', name='value', value='PHP')
-                                                    span.selectgroup-button PHP
+                                                    input.selectgroup-input(type='checkbox', name='value', value='CSIT 406')
+                                                    span.selectgroup-button CSIT 406
                                                 label.selectgroup-item
-                                                    input.selectgroup-input(type='checkbox', name='value', value='JavaScript')
-                                                    span.selectgroup-button JavaScript
+                                                    input.selectgroup-input(type='checkbox', name='value', value='CSIT 408')
+                                                    span.selectgroup-button CSIT 408
                                                 label.selectgroup-item
-                                                    input.selectgroup-input(type='checkbox', name='value', value='Ruby')
-                                                    span.selectgroup-button Ruby
-                                                label.selectgroup-item
-                                                    input.selectgroup-input(type='checkbox', name='value', value='Ruby')
-                                                    span.selectgroup-button Ruby
-                                                label.selectgroup-item
-                                                    input.selectgroup-input(type='checkbox', name='value', value='C++')
-                                                    span.selectgroup-button C++
+                                                    input.selectgroup-input(type='checkbox', name='value', value='CSIT 410')
+                                                    span.selectgroup-button CSIT 410
                         .card-footer.text-center
                             button.btn.btn-success(type='submit') Add User
 

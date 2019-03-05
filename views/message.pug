@@ -1,0 +1,5 @@
+.messages   
+    each type in Object.keys(messages)
+        each message in messages[type]
+            div.text-center.alert-dismissible.fade.show(role="alert" class="alert alert-"+type) #{message}
+                button.close(type='button', data-dismiss='alert', aria-label='Close')

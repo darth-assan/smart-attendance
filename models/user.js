@@ -12,11 +12,9 @@ const userSchema = mongoose.Schema({
     },
     password:{
         type:String,
-        require
+        require:true
     },
-    courses:[{
-        code : String
-    }]
+    courses:[String]
 });
 
 const User = module.exports = mongoose.model('users',userSchema); 

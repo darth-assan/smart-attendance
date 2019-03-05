@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session');
+const flash = require('connect-flash');
 
 // Database connection
 const config = require('./config/database')
@@ -46,7 +47,8 @@ app.use(session({
     saveUninitialized: true
   }));
 
-// Express Messages Middleware
+// Express Flash Middleware
+app.use(require('connect-flash')());
 app.use(function (req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
   next();
@@ -72,6 +74,7 @@ require('./config/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Custom Flash Messages
 app.get('*', function(req,res,next){
     res.locals.user = req.user || null;
     next();
@@ -79,8 +82,9 @@ app.get('*', function(req,res,next){
 
 //Home route
 app.get('/',(req,res)=>{
+    // req.flash('info', 'Login into your account')
     res.render('login',{
-        title:'Login'
+        title:'Login',
     });
 });
 

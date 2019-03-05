@@ -25,7 +25,8 @@ const courseSchema = mongoose.Schema({
     day:{
         type: String,
         require: true
-    }
+    },
+    registered:String
 });
 
 const Course = module.exports = mongoose.model('courses', courseSchema);

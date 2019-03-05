@@ -43,8 +43,8 @@ newCourse.save(function(err){
         console.log(err);
         return;
     }else{
-        console.log('course added successfully')
-        res.redirect('/users/dashboard');
+        req.flash('success','Course added successfully')
+        res.redirect('/users/register');
     }
 });
 
@@ -54,6 +54,7 @@ newCourse.save(function(err){
 router.get('/:id',(req,res)=>{
     Course.findById(req.params.id,(err,course)=>{
             res.render('course',{
+            title:'Courses',
             course:course
         });
     });

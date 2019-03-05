@@ -1,6 +1,6 @@
 doctype html
 html
-    title #{title}
+    title #{title} | itendax 
     link(rel="stylesheet" href="/style.css")
     link(rel="stylesheet" href="/vendor/css/dashboard.css")
     link(rel="stylesheet" href="/vendor/css/tabler.css")
@@ -25,7 +25,7 @@ body
                                         i.dropdown-icon.fe.fe-user
                                         |   Profile
                                     .dropdown-divider
-                                    a.dropdown-item(href='/users/signout')
+                                    a.dropdown-item(href='/users/logout')
                                         i.dropdown-icon.fe.fe-log-out
                                         |  Sign out
                         a.header-toggler.d-lg-none.ml-3.ml-lg-0(href='#' data-toggle='collapse' data-target='#headerMenuCollapse')
@@ -41,15 +41,15 @@ body
                         .col-lg.order-lg-first
                             ul.nav.nav-tabs.border-0.flex-column.flex-lg-row
                                 li.nav-item
-                                    a.nav-link.active(href='/users/dashboard')
+                                    a.nav-link(class=(name == "dashboard" ? "active" : undefined) href='/users/dashboard')
                                         i.fe.fe-home
                                         |  Home
                                 li.nav-item
-                                    a.nav-link(href='/users/register')
+                                    a.nav-link(class=(name == "registeration" ? "active" : undefined) href='/users/register')
                                         i.fe.fe-check-square
                                         | Registeration
                                 li.nav-item.dropdown
-                                    a.nav-link(href='#')
+                                    a.nav-link(class=(name == "report" ? "active" : undefined) href='#')
                                         i.fe.fe-calendar
                                         | Report
                                

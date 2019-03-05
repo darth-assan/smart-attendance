@@ -15,13 +15,16 @@ router.post('/login',function(req,res,next){
     passport.authenticate('local', {
         successRedirect: '/users/dashboard',
         failureRedirect:'/',
-        failureFlash: false
+        failureFlash: true
     })(req,res,next);
 });
 
 // Register Form
 router.get('/register',function(req,res){
-    res.render('register');
+    res.render('register',{
+        title:'Register',
+        name:'registeration'
+    });
 });
 
 // Register Process
@@ -47,12 +50,14 @@ router.post('/register',[
     const email = req.body.email;
     const name = req.body.name;
     const password = req.body.password;
+    const courses = req.body.value
 
 
 let newUser = new User({
     email:email,
     name:name,
-    password:password
+    password:password,
+    courses:courses
 });
 
 bcrypt.genSalt(10,function(err,salt){
@@ -78,63 +83,77 @@ bcrypt.genSalt(10,function(err,salt){
 router.get('/dashboard',(req,res)=>{
     switch (new Date().getDay()) {
         case 1:
-            Course.find({day:"Monday"},(err,data)=>{
+            Course.find({day:"MONDAY"},(err,data)=>{
                 if(err){
                     console.log(err);
                 }else{
                     res.render('dashboard',{
+                        title:"Dashboard",
+                        name:"dashboard",
                         courses:data
                     });
                 };
             });
             break;
         case 2:
-            Course.find({day:"Tuesday"},(err,data)=>{
+            Course.find({day:"TUESDAY"},(err,data)=>{
                 if(err){
                     console.log(err);
                 }else{
                     res.render('dashboard',{
+                        title:"Dashboard",
+                        name:"dashboard",
                         courses:data
                     });
                 };
             });
+            break;
         case 3:
-            Course.find({day:"Wednesday"},(err,data)=>{
+            Course.find({day:"WEDNESDAY"},(err,data)=>{
                 if(err){
                     console.log(err);
                 }else{
                     res.render('dashboard',{
+                        title:"Dashboard",
+                        name:"dashboard",
                         courses:data
                     });
                 };
             });
             break;
         case 4:
-            Course.find({day:"Thursday"},(err,data)=>{
+            Course.find({day:"THURSDAY"},(err,data)=>{
                 if(err){
                     console.log(err);
                 }else{
                     res.render('dashboard',{
+                        title:"Dashboard",
+                        name:"dashboard",
                         courses:data
                     });
                 };
             });
+            break;
         case 5:
-            Course.find({day:"Friday"},(err,data)=>{
+            Course.find({day:"FRIDAY"},(err,data)=>{
                 if(err){
                     console.log(err);
                 }else{
                     res.render('dashboard',{
+                        title:"dashboard",
                         courses:data
                     });
                 };
             });
+            break;
         default:
             Course.find({ day: { $exists: false } } ,(err)=>{
                 if(err){
                     console.log(err);
                 }else{
                     res.render('error',{
+                        title:"Dashboard",
+                        name:"dashboard",
                         msg:"No Courses Available on this day!!"
                     });
                 };
@@ -145,7 +164,16 @@ router.get('/dashboard',(req,res)=>{
 
 // Profile
 router.get('/profile',(req,res)=>{
-    res.render('profile');
+    res.render('profile',{
+        title:'Profile'
+    });
+});
+
+// Logout
+router.get('/logout',function(req,res){
+    req.logout();
+    // req.flash('success','You are logged out');
+    res.redirect('/');
 })
 
 module.exports = router;

@@ -6,6 +6,8 @@ block content
             .page-header
                 .page-title
                     h1 Dashboard
+                
+            != messages('message',locals)
             .row
                 .col-sm-6.col-lg-5
                     .card.p-3
@@ -64,7 +66,7 @@ block content
                                             th Time
                                     tbody
                                         each course,i in courses
-                                            -if(course.day === 'Monday')
+                                            -if(course.day === 'MONDAY')
                                                 tr
                                                     td= course.code
                                                     td= course.title
@@ -91,7 +93,7 @@ block content
                                             th Time
                                     tbody
                                         each course,i in courses
-                                            -if(course.day === 'Tuesday')
+                                            -if(course.day === 'TUESDAY')
                                                 tr
                                                     td= course.code
                                                     td= course.title
