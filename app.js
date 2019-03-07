@@ -9,6 +9,7 @@ const flash = require('connect-flash');
 // Database connection
 const config = require('./config/database')
 mongoose.connect(config.database);
+mongoose.Promise = global.Promise;
 let db = mongoose.connection;
 
 // Check database connection
@@ -91,8 +92,10 @@ app.get('/',(req,res)=>{
 // Route Files
 let users = require('./routes/users');
 let courses = require('./routes/courses');
+let api = require('./routes/api');
 app.use('/users', users);
 app.use('/courses',courses);
+app.use('/api',api);
 
 // Start Server
 app.listen(3000,()=>{
