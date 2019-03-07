@@ -4,11 +4,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session');
-const flash = require('connect-flash');
 
 // Database connection
 const config = require('./config/database')
-mongoose.connect(config.database);
+mongoose.connect(config.database,{ useNewUrlParser: true });
+mongoose.set('useCreateIndex', true);
 mongoose.Promise = global.Promise;
 let db = mongoose.connection;
 
@@ -17,10 +17,6 @@ db.once('open', function(){
     console.log('Connected to MongoDB established');
 });
 
-// Bring in models
-let Course = require('./models/course');
-let User = require('./models/user');
-
 //check for db errors
 db.on('error',function(err){
     console.log(err);
@@ -28,14 +24,6 @@ db.on('error',function(err){
 
 // Init App
 const app = express();
-
-// Middleware to get the current day
-// var dateTime = function (req, res, next) {
-//     req.dateTime = new Date().getDay();
-//     next()
-//   }
-
-// app.use(dateTime);
 
 // Body Parser Middleware
 // parse application/x-www-form-urlencoded
@@ -47,6 +35,13 @@ app.use(session({
     resave: false,
     saveUninitialized: true
   }));
+
+// Passport Config
+require('./config/passport')(passport);
+
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Express Flash Middleware
 app.use(require('connect-flash')());
@@ -68,12 +63,6 @@ app.set('view engine','pug');
 //Set public folder
 app.use(express.static(path.join(__dirname,'public')));
 
-// Passport Config
-require('./config/passport')(passport);
-
-// Passport Middleware
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Custom Flash Messages
 app.get('*', function(req,res,next){
@@ -93,6 +82,7 @@ app.get('/',(req,res)=>{
 let users = require('./routes/users');
 let courses = require('./routes/courses');
 let api = require('./routes/api');
+
 app.use('/users', users);
 app.use('/courses',courses);
 app.use('/api',api);

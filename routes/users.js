@@ -71,7 +71,8 @@ bcrypt.genSalt(10,function(err,salt){
                 console.log(err);
                 return;
             }else{
-                res.redirect('/');
+                req.flash('success','User added successfully')
+                res.redirect('/users/register');
             }
         });
     });
