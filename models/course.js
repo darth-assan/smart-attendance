@@ -4,11 +4,13 @@ const mongoose = require('mongoose');
 const courseSchema = mongoose.Schema({
     code:{
         type: String,
-        require: true
+        require: true,
+        uppercase: true
     },
     title:{
         type: String,
-        require: true
+        require: true,
+        uppercase: true
     },
     venue:{
         type: String,
@@ -23,10 +25,13 @@ const courseSchema = mongoose.Schema({
         require: true
     },
     day:{
-        type: String,
+        type: Number,
         require: true
     },
-    registered:String
-});
+    assigned: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: null
+    }
+},{timestamps: true});
 
 const Course = module.exports = mongoose.model('courses', courseSchema);

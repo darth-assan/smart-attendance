@@ -14,7 +14,7 @@ let db = mongoose.connection;
 
 // Check database connection
 db.once('open', function(){
-    console.log('Connected to MongoDB established');
+    console.log('Connection to MongoDB established successfully');
 });
 
 //check for db errors

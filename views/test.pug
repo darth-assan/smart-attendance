@@ -1,0 +1,55 @@
+extends layout
+
+block content
+    .my-3.my-md-5 
+        .container
+            h1 Admin Page
+            != messages('message',locals)
+            .row
+                .col-md-2
+                    .row    
+                        .col-md-12
+                            .card
+                                .card-body.p-3.text-center
+                                    .h1.m-0 total_users
+                                    .text-muted.mb-4 Total Number of Lecturers
+                        .col-md-12
+                            .card
+                                .card-body.p-3.text-center
+                                    .h1.m-0 total_courses
+                                    .text-muted.mb-4 Total Number of Courses
+
+                .col-md-5
+                    .row
+                        .col-md-12
+                            form.card(method="POST", action="/users/register")
+                                    .card-body
+                                        h3.card-title Add User
+                                        .row
+                                            .col-md-6
+                                                    .form-group
+                                                        label.form-label First Name
+                                                        input.form-control(name='firstName', type='text', placeholder='Enter your First Name')
+                                            .col-md-6
+                                                    .form-group
+                                                        label.form-label Last Name 
+                                                        input.form-control(name='lastName', type='text', placeholder='Enter your Last Name')
+                                            .col-md-12
+                                                    .form-group
+                                                        label.form-label Email Address
+                                                        input.form-control(name='email', type='email', placeholder='Email')
+                                            .col-md-6
+                                                    .form-group
+                                                        label.form-label Password
+                                                        input.form-control(name='password', type='password', placeholder='Enter current password')
+                                            .col-md-6
+                                                    .form-group
+                                                        label.form-label Confirm Password
+                                                        input.form-control(name='password2', type='password', placeholder='Confirm password', )
+                                    .card-footer.d-flex
+                                        button.btn.btn-danger(type='reset') Cancel
+                                        button.btn.btn-success.ml-auto(type='submit') Add User
+                      
+            
+
+            

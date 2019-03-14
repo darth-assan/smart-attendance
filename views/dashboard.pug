@@ -8,25 +8,58 @@ block content
                     h1 Dashboard
                 
             != messages('message',locals)
-            .row
-                .col-sm-6.col-lg-5
-                    .card.p-3
-                        .d-flex.align-items-center
-                            .stamp.stamp-md.bg-red.mr-3
-                                i.fe.fe-file
-                            div
-                                h4.m-0
-                                    small Available Lectures
-                                    |   today 
-                                small.text-muted 21/02/2019
+            .col-md-12
+                .card(class=(new Date().getDay() == 0 || new Date().getDay() == 6 ? "   card-collapsed" : undefined))
+                    .card-status.bg-yellow
+                    .card-header
+                        h3.card-title Courses for Today
+                        .card-options
+                                a.card-options-collapse(href='#', data-toggle='card-collapse')
+                                    i.fe.fe-chevron-up
+                                a.card-options-remove(href='#', data-toggle='card-remove')
+                                    i.fe.fe-x
+                    .card-body
+                        .col-12
+                            .table-responsive
+                                    table.table.card-table.table-vcenter.text-nowrap
+                                            thead
+                                                tr
+                                                    th Code
+                                                    th Title
+                                                    th Duration
+                                                    th time
+                                                    th Venue
+                                                    th
+                                            tbody
+                                            each course,i in courses
+                                                if (new Date().getDay() == course.day)
+                                                    tr
+                                                        td= course.code
+                                                        td= course.title
+                                                        td= course.duration
+                                                        td= course.time
+                                                        td= course.venue
+                                                        td.text-right
+                                                            a.btn.btn-dark.btn-sm(href="/courses/"+course._id) Enter 
 
-                    each course,i in courses
-                        .col-lg-12
+
+
+
+
+            .card.p-3
+                .d-flex.align-items-center
+                    .stamp.stamp-md.bg-green.mr-3
+                        i.fe.fe-list
+                    div
+                        h4.m-0
+                        |    Assigned Courses
+            .row
+                each course,i in courses
+                    .col-md-4
                             .card.card-aside
-                                a.card-aside-column.code(href="/courses/"+course._id style='background-color: cyan')= course.code
+                                a.card-aside-column.code(style='background-color: cyan')= course.code
                                 .card-body.d-flex.flex-column
-                                    h5
-                                        a(href="/courses/"+course._id)= course.title
+                                    h5= course.title
                                     .text-muted.row
 
                                         .text-center
@@ -36,69 +69,3 @@ block content
                                             i.fe.fe-watch
                                             span=   course.duration
             
-
-                .col-sm-6.col-lg-7
-                    .card.p-3
-                        .d-flex.align-items-center
-                            .stamp.stamp-md.bg-yellow.mr-3
-                                i.fe.fe-list
-                            div
-                                h4.m-0
-                                    small Available Lectures
-                                    |   for the week
-                    .card
-                        .card-status.bg-blue
-                        .card-header
-                            h3.card-title Monday
-                            .card-options
-                                    a.card-options-collapse(href='#', data-toggle='card-collapse')
-                                        i.fe.fe-chevron-up
-                                    a.card-options-remove(href='#', data-toggle='card-remove')
-                                        i.fe.fe-x
-                        .card-body
-                            .table-responsive
-                                table.table.card-table.table-striped.table-vcenter
-                                    thead
-                                        tr
-                                            th Code 
-                                            th Course Title
-                                            th Duration
-                                            th Time
-                                    tbody
-                                        each course,i in courses
-                                            -if(course.day === 'MONDAY')
-                                                tr
-                                                    td= course.code
-                                                    td= course.title
-                                                    td= course.duration
-                                                    td= course.time
-                                                        
-                    .card
-                        .card-status.bg-yellow
-                        .card-header
-                            h3.card-title Tuesday
-                            .card-options
-                                    a.card-options-collapse(href='#', data-toggle='card-collapse')
-                                        i.fe.fe-chevron-up
-                                    a.card-options-remove(href='#', data-toggle='card-remove')
-                                        i.fe.fe-x
-                        .card-body
-                            .table-responsive
-                                table.table.card-table.table-striped.table-vcenter
-                                    thead
-                                        tr
-                                            th Code 
-                                            th Course Title
-                                            th Duration
-                                            th Time
-                                    tbody
-                                        each course,i in courses
-                                            -if(course.day === 'TUESDAY')
-                                                tr
-                                                    td= course.code
-                                                    td= course.title
-                                                    td= course.duration
-                                                    td= course.time 
-                                       
-
-

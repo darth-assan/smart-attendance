@@ -1,0 +1,153 @@
+extends layout
+
+block content
+    .my-3.my-md-5 
+        .container
+            h1 Admin Page
+            != messages('message',locals)
+            .row
+                .col-md-2
+                    .row    
+                        .col-md-12
+                            .card
+                                .card-body.p-3.text-center
+                                    .h1.m-0= total_users
+                                    .text-muted.mb-4 Total Number of Lecturers
+                        .col-md-12
+                            .card
+                                .card-body.p-3.text-center
+                                    .h1.m-0= total_courses
+                                    .text-muted.mb-4 Total Number of Courses
+
+                .col-md-5
+                    .row
+                        .col-md-12
+                            form.card(method="POST", action="/users/register")
+                                    .card-body
+                                        h3.card-title Add User
+                                        .row
+                                            .col-md-6
+                                                    .form-group
+                                                        label.form-label First Name
+                                                        input.form-control(name='firstName', type='text', placeholder='Enter your First Name')
+                                            .col-md-6
+                                                    .form-group
+                                                        label.form-label Last Name 
+                                                        input.form-control(name='lastName', type='text', placeholder='Enter your Last Name')
+                                            .col-md-12
+                                                    .form-group
+                                                        label.form-label Email Address
+                                                        input.form-control(name='email', type='email', placeholder='Email')
+                                            .col-md-6
+                                                    .form-group
+                                                        label.form-label Password
+                                                        input.form-control(name='password', type='password', placeholder='Enter current password')
+                                            .col-md-6
+                                                    .form-group
+                                                        label.form-label Confirm Password
+                                                        input.form-control(name='password2', type='password', placeholder='Confirm password', )
+                                    .card-footer.d-flex
+                                        button.btn.btn-danger(type='reset') Cancel
+                                        button.btn.btn-success.ml-auto(type='submit') Add User
+                        .col-md-12
+                            .card
+                                .card-header
+                                    h3.card-title Users' List
+                                .card-body.o-auto(style='height: 15rem')
+                                    ul.list-unstyled.list-separated
+                                        each user,i in users
+                                            li.list-separated-item
+                                                .row.align-items-center
+                                                    .col-auto
+                                                        span.avatar.avatar-md.d-block(style='background-image: url(/vendor/images/user1.png)')
+                                                    .col
+                                                        div
+                                                                a.text-inherit.text-capitalize(href='javascript:void(0)')= user.name.lastName + ' ' + user.name.firstName
+                                                        small.d-block.item-except.text-sm.text-muted.h-1x= user.email
+                                                    .col-auto
+                                                        .item-action.dropdown
+                                                                a.icon(href='javascript:void(0)', data-toggle='dropdown')
+                                                                    i.fe.fe-more-vertical
+                                                                .dropdown-menu.dropdown-menu-right
+                                                                    a.dropdown-item(href='javascript:void(0)')
+                                                                        i.dropdown-icon.fe.fe-edit
+                                                                        |  Update
+                                                                    a.dropdown-item(href='javascript:void(0)')
+                                                                        i.dropdown-icon.fe.fe-trash
+                                                                        |  Delete
+                  
+            
+
+                .col-md-5
+                    .row
+                        .col-md-12
+                            form.card(method="POST", action="/courses/register")
+                                .card-body
+                                    h3.card-title Add Course
+                                    .row
+                                        .col-md-4
+                                                .form-group
+                                                    label.form-label  Code 
+                                                    input.form-control(name='code', type='text', placeholder='CSIT 101')
+                                        .col-md-8
+                                                .form-group
+                                                    label.form-label  Title
+                                                    input.form-control(name='title', type='text', placeholder='Introduction to Computing')
+                                        .col-md-4
+                                                .form-group
+                                                    label.form-label Duration
+                                                    select.form-control(name="duration")
+                                                        option(value="" selected='') Choose...
+                                                        option(value="2 Hours") 2 Hours
+                                                        option(value="1 Hours") 1 Hour 
+                                        .col-md-4
+                                                .form-group
+                                                    label.form-label Time
+                                                    .input-group.clockpicker(data-placement="right" data-align="top" data-autoclose="true")
+                                                        input.form-control(type='text', value='now', name='time')
+                                                        span.input-group-append
+                                                            span.input-group-text.fe.fe-watch
+                                                    
+                                        .col-md-4
+                                                .form-group
+                                                    label.form-label Day
+                                                    select.form-control(name="day")
+                                                        option(value="") Choose...
+                                                        option(value=1) Monday
+                                                        option(value=2) Tuesday 
+                                                        option(value=3) Wednesday 
+                                                        option(value=4) Thursday 
+                                                        option(value=5) Friday 
+                                        .col-md-12
+                                                .form-group
+                                                    label.form-label Venue
+                                                    select.form-control(name="venue")
+                                                        option(value="") Choose...
+                                                        option(value="Software Lab") Software Lab
+                                                        option(value="Chinese Lab") Chinese Lab
+                                                        option(value="Hardware Lab") Hardware Lab
+                                .card-footer.text-center
+                                    button.btn.btn-success(type='submit') Add Course
+                        .col-lg-12
+                            .card
+                                .card-header
+                                    h3.card-title Courses' List
+                                .table-responsive
+                                    table.table.card-table.table-striped.table-vcenter
+                                            thead
+                                                tr
+                                                    th Code
+                                                    th Title
+                                                    th(colspan='2') Action
+                                            tbody
+                                                each course, i in courses
+                                                    tr
+                                                        td= course.code
+                                                        td= course.title
+                                                        td.w-1
+                                                            a.icon(href='#')
+                                                                    i.fe.fe-edit
+                                                        td.w-1
+                                                            a.icon(href='#')
+                                                                    i.fe.fe-trash
+                         

@@ -3,8 +3,11 @@ html
     title #{title} | itendax 
     link(rel="stylesheet" href="/style.css")
     link(rel="stylesheet" href="/vendor/css/dashboard.css")
-    link(rel="stylesheet" href="/vendor/css/tabler.css")
+    link(rel="stylesheet" href="/vendor/css/dashboard.css")
+    link(rel="stylesheet" href="/vendor/timepicker/jquery-clockpicker.min.css")
+    link(rel="stylesheet" href="/vendor/timepicker/bootstrap-clockpicker.min.css")
     link(rel="icon" href="/vendor/images/favicon.ico" type="image/x-icon")
+
 
 body
     .page
@@ -17,9 +20,9 @@ body
                         .d-flex.order-lg-2.ml-auto
                             .dropdown
                                 a.nav-link.pr-0.leading-none(href='#' data-toggle='dropdown')
-                                    span.avatar(style='background-image: url(/vendor/images/1.jpg)')
+                                    span.avatar(style='background-image: url(/vendor/images/user1.png)')
                                     span.ml-2.d-none.d-lg-block
-                                        span.text-default Assan Arthur
+                                        span.text-capitalize.text-default= user_name
                                 .dropdown-menu.dropdown-menu-right.dropdown-menu-arrow
                                     a.dropdown-item(href='/users/profile')
                                         i.dropdown-icon.fe.fe-user
@@ -30,28 +33,29 @@ body
                                         |  Sign out
                         a.header-toggler.d-lg-none.ml-3.ml-lg-0(href='#' data-toggle='collapse' data-target='#headerMenuCollapse')
                             span.header-toggler-icon
-            #headerMenuCollapse.header.collapse.d-lg-flex.p-0
-                .container
-                    .row.align-items-center
-                        //- .col-lg-2.text-lg-right
-                        //-     label.custom-switch
-                        //-         input.custom-switch-input(type='checkbox' name='custom-switch-checkbox')
-                        //-         span.custom-switch-indicator
-                        //-         span.custom-switch-description Enable Wi-Fi
-                        .col-lg.order-lg-first
-                            ul.nav.nav-tabs.border-0.flex-column.flex-lg-row
-                                li.nav-item
-                                    a.nav-link(class=(name == "dashboard" ? "active" : undefined) href='/users/dashboard')
-                                        i.fe.fe-home
-                                        |  Home
-                                li.nav-item
-                                    a.nav-link(class=(name == "registeration" ? "active" : undefined) href='/users/register')
-                                        i.fe.fe-check-square
-                                        | Registeration
-                                li.nav-item.dropdown
-                                    a.nav-link(class=(name == "report" ? "active" : undefined) href='#')
-                                        i.fe.fe-calendar
-                                        | Report
+            -if(isAdmin === false)
+                #headerMenuCollapse.header.collapse.d-lg-flex.p-0
+                    .container
+                        .row.align-items-center
+                            .col-lg-3.text-lg-right
+                                label.custom-switch
+                                    input.custom-switch-input(type='checkbox' name='custom-switch-checkbox')
+                                    span.custom-switch-indicator
+                                    span.custom-switch-description Authorize Attendance
+                            .col-lg.order-lg-first
+                                ul.nav.nav-tabs.border-0.flex-column.flex-lg-row
+                                    li.nav-item
+                                        a.nav-link(class=(title == "Dashboard" ? "active" : undefined) href='/users/dashboard')
+                                            i.fe.fe-home
+                                            |  Home
+                                    li.nav-item
+                                        a.nav-link(class=(title == "Add Courses" ? "active" : undefined) href='/users/add_courses')
+                                            i.fe.fe-check-square
+                                            | Add Courses
+                                    li.nav-item.dropdown
+                                        a.nav-link(class=(title == "Report" ? "active" : undefined) href='#')
+                                            i.fe.fe-calendar
+                                            | Report
                                
             block content
         include includes/footer.pug
@@ -60,4 +64,13 @@ script(src="/vendor/js/vendors/jquery-3.2.1.min.js")
 script(src="/vendor/js/vendors/bootstrap.bundle.min.js")
 script(src="/vendor/js/core.js")
 script(src="/vendor/js/dashboard.js")
-script(src="/vendor/js/require.min.js")      
+script(src="/vendor/js/require.min.js")  
+script(src="/vendor/timepicker/jquery-clockpicker.min.js")    
+script(src="/vendor/timepicker/bootstrap-clockpicker.minn.js")  
+
+script(type='text/javascript').
+    $('.clockpicker').clockpicker({
+        'default': 'now'
+    });
+    
+

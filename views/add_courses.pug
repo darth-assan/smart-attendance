@@ -1,0 +1,36 @@
+extends layout
+
+block content
+    .my-3.my-md-5 
+        .container
+            h1 Add Courses
+            != messages('message',locals)
+            .row
+                .col-md-12
+                    form.form.card(method="POST", action="/users/add_courses")
+                        table.table.card-table.table-vcenter.table-striped
+                            thead.text-muted.text-uppercase
+                                tr
+                                    td.w-1 Add
+                                    td Course Code
+                                    td course Title
+                                    td Duration
+                                    td Time
+                                    td Venue
+                            tbody
+                                each course,i in courses
+                                    tr.h-8
+                                        td
+                                            -var state = course.assigned
+                                            label.custom-control.custom-checkbox
+                                                input.custom-control-input(type='checkbox', name='selected', value= course._id, disabled=(state !== null ? true : false), checked=(state !== null ? true : false))
+                                                span.custom-control-label 
+                                        td 
+                                            strong= course.code
+                                        td 
+                                            strong= course.title
+                                        td.text-muted= course.duration
+                                        td.text-muted= course.time
+                                        td= course.venue
+                        .card-footer.text-center
+                            button.btn.btn-success.ml-auto(type='submit') Submit Selection

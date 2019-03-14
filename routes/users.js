@@ -7,30 +7,57 @@ const passport = require('passport');
 
 // bring in user model
 let User = require('../models/user');
+// bring in user model
 let Course = require('../models/course');
 
-
 // Login Process
-router.post('/login',function(req,res,next){
-    passport.authenticate('local', {
-        successRedirect: '/users/dashboard',
-        failureRedirect:'/',
-        failureFlash: true
-    })(req,res,next);
+router.post('/login',
+    passport.authenticate('local',{failureFlash:true,failureRedirect:"/"}),
+    function(req, res) {
+    // If this function gets called, authentication was successful.
+    // `req.user` contains the authenticated user.
+    User.findById(req.user._id,(err,data)=>{
+        if (err) throw err
+        if(data.isAdmin === true){
+            res.redirect('/users/admin/?_id=' + req.user._id);
+        }else{
+            res.redirect('/users/dashboard/?_id=' + req.user._id);
+        }
+    });  
+    });
+
+//Get admin page
+router.get('/admin',(req,res)=>{
+    User.find({},(err,data)=>{
+        if (err) throw err
+            Course.find({},(err,data2)=>{
+                if (err) throw err
+                    User.findById(req.user._id,(err,data3)=>{
+                        if(err) throw err
+                        res.render('admin',{
+                            title:'Admin',
+                            total_users: data.length,
+                            total_courses: data2.length,
+                            user_name:data3.name.lastName,
+                            users:data,
+                            courses:data2
+                    });
+            });
+        });
+    })
 });
 
-// Register Form
-router.get('/register',function(req,res){
-    res.render('register',{
-        title:'Register',
-        name:'registeration'
-    });
-});
+// Back door registertion used when all users are deleted from the db
+// router.get('/test',(req,res)=>{
+//     res.render('test')
+// })
+
 
 // Register Process
 router.post('/register',[
     check('email').isEmail(),
-    check('name').isString(),
+    check('firstName').isString(),
+    check('lastName').isString(),
     check('password').isLength({min:5}),
     check('password2')
         .isLength({min:5})
@@ -44,27 +71,29 @@ router.post('/register',[
 ],(req,res)=>{
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+        req.flash('danger','Something went wrong. Check your input and retry.');
+        return res.status(422).json({ errors: errors.array() });
     }
 
     const email = req.body.email;
-    const name = req.body.name;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
     const password = req.body.password;
-    const courses = req.body.value
 
 
 let newUser = new User({
+    name:{
+        firstName:firstName,
+        lastName:lastName
+    },
     email:email,
-    name:name,
-    password:password,
-    courses:courses
+    password:password
 });
 
 bcrypt.genSalt(10,function(err,salt){
+    if(err) throw err
     bcrypt.hash(newUser.password,salt, function(err,hash){
-        if(err){
-            console.log(err);
-        }
+        if(err) throw err
         newUser.password = hash;
         newUser.save(function(err){
             if(err){
@@ -72,95 +101,55 @@ bcrypt.genSalt(10,function(err,salt){
                 return;
             }else{
                 req.flash('success','User added successfully')
-                res.redirect('/users/register');
+                res.redirect('/users/admin');
             }
         });
     });
 });
 });
 
+//Get Add Courses
+router.get('/add_courses',(req,res)=>{
+    User.findById(req.user._id,(err,data)=>{
+        if(err) throw err
+            Course.find({},(err,data1)=>{
+                if (err) throw err
+                res.render('add_courses',{
+                    title: 'Add Courses',
+                    isAdmin:data.isAdmin,
+                    user_name:data.name.lastName,
+                    courses: data1
+                });
+            });
+    });
+});
+
+//Post courses selected
+router.post('/add_courses',(req,res)=>{
+    //let selected = req.body.selected
+    // console.log(selected)
+    [req.body.selected].forEach(element => {
+        Course.findByIdAndUpdate(element,{assigned:req.user._id},(err)=>{
+            if (err) throw err
+        });
+    });
+    res.redirect('/users/dashboard');
+});
 
 // Get user dashboard
 router.get('/dashboard',(req,res)=>{
-    switch (new Date().getDay()) {
-        case 1:
-            Course.find({day:"MONDAY"},(err,data)=>{
-                if(err){
-                    console.log(err);
-                }else{
-                    res.render('dashboard',{
-                        title:"Dashboard",
-                        name:"dashboard",
-                        courses:data
-                    });
-                };
+    User.findById(req.user._id,(err,data)=>{
+        if(err) throw err
+            Course.find({assigned:req.user._id},(err,data1)=>{
+                if (err) throw err
+                res.render('dashboard',{
+                    title: 'Dashboard',
+                    isAdmin:data.isAdmin,
+                    user_name:data.name.lastName,
+                    courses:data1
+                });
             });
-            break;
-        case 2:
-            Course.find({day:"TUESDAY"},(err,data)=>{
-                if(err){
-                    console.log(err);
-                }else{
-                    res.render('dashboard',{
-                        title:"Dashboard",
-                        name:"dashboard",
-                        courses:data
-                    });
-                };
-            });
-            break;
-        case 3:
-            Course.find({day:"WEDNESDAY"},(err,data)=>{
-                if(err){
-                    console.log(err);
-                }else{
-                    res.render('dashboard',{
-                        title:"Dashboard",
-                        name:"dashboard",
-                        courses:data
-                    });
-                };
-            });
-            break;
-        case 4:
-            Course.find({day:"THURSDAY"},(err,data)=>{
-                if(err){
-                    console.log(err);
-                }else{
-                    res.render('dashboard',{
-                        title:"Dashboard",
-                        name:"dashboard",
-                        courses:data
-                    });
-                };
-            });
-            break;
-        case 5:
-            Course.find({day:"FRIDAY"},(err,data)=>{
-                if(err){
-                    console.log(err);
-                }else{
-                    res.render('dashboard',{
-                        title:"dashboard",
-                        courses:data
-                    });
-                };
-            });
-            break;
-        default:
-            Course.find({ day: { $exists: false } } ,(err)=>{
-                if(err){
-                    console.log(err);
-                }else{
-                    res.render('error',{
-                        title:"Dashboard",
-                        name:"dashboard",
-                        msg:"No Courses Available on this day!!"
-                    });
-                };
-            });
-
-    };
+    });
 });
 
 // Profile
@@ -173,7 +162,6 @@ router.get('/profile',(req,res)=>{
 // Logout
 router.get('/logout',function(req,res){
     req.logout();
-    // req.flash('success','You are logged out');
     res.redirect('/');
 })
 
