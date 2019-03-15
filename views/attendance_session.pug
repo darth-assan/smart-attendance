@@ -1,0 +1,39 @@
+extends layout
+
+block content 
+    .my-3.my-md-5   
+        .container  
+            .page-header
+                .page-title
+                    h1 Attendance Session
+            .row
+                .col-12
+                    .card.p-3
+                        .d-flex.align-items-center
+                            .stamp.stamp-md.bg-blue.mr-3
+                                i.fe.fe-paperclip
+                            div.text-left.col-md-9
+                                h4.m-0
+                                    div= course.code
+                                    small= course.title
+                            //- div.text-right.col-md-2
+                            //-     h4.m-0
+                            //-         div course.title 
+                            //-         small Registered Students
+
+                .col-lg-12
+                    .card
+                        .card-header
+                            h3.card-title Attendance Statistics
+                        .table-responsive
+                            table.table.card-table.table-striped.table-vcenter
+                                thread
+                                    tr 
+                                        th Student ID
+                                        th Name
+                                tbody
+                                    each student,i in students
+                                        tr
+                                            td= student.id
+                                            td= student.name.lastName + " " + student.name.firstName
+            

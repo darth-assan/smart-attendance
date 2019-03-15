@@ -3,7 +3,11 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator/check');
 
 // bring in user model
+let User = require('../models/user');
+// bring in course model
 let Course = require('../models/course');
+// bring in student model
+let Student = require('../models/student');
 
 // Register Courses
 router.post('/register',[
@@ -49,11 +53,21 @@ newCourse.save(function(err){
 });
 
 //Get Single Course
-router.get('/:id',(req,res)=>{
-    Course.findById(req.params.id,(err,course)=>{
-            res.render('course',{
-            title:'Courses',
-            course:course
+router.get('/attendance_session/:id',(req,res)=>{
+    User.findById(req.user._id,(err,data)=>{
+        if(err) throw err
+        Course.findById(req.params.id,(err,course)=>{
+        if (err) throw err
+            Student.find({ courses: { $in: [req.params.id]}},(err,students)=>{
+                if (err) throw err
+                res.render('attendance_session',{
+                    title:'Attendance Session',
+                    isAdmin:data.isAdmin, 
+                    user_name:data.name.lastName,
+                    course:course,
+                    students:students
+                });
+            });
         });
     });
 });

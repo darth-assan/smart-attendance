@@ -72,7 +72,6 @@ app.get('*', function(req,res,next){
 
 //Home route
 app.get('/',(req,res)=>{
-    // req.flash('info', 'Login into your account')
     res.render('login',{
         title:'Login',
     });
@@ -81,7 +80,7 @@ app.get('/',(req,res)=>{
 // Route Files
 let users = require('./routes/users');
 let courses = require('./routes/courses');
-let api = require('./routes/api');
+let api = require('./api/api');
 
 app.use('/users', users);
 app.use('/courses',courses);

@@ -114,9 +114,10 @@ router.get('/add_courses',(req,res)=>{
         if(err) throw err
             Course.find({},(err,data1)=>{
                 if (err) throw err
+                req.flash('warning','DISABLED COURSES HAVE ALREADY BEEN ASSIGNED TO OTHER USER')
                 res.render('add_courses',{
                     title: 'Add Courses',
-                    isAdmin:data.isAdmin,
+                    isAdmin:data.isAdmin,   
                     user_name:data.name.lastName,
                     courses: data1
                 });

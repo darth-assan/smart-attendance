@@ -26,7 +26,7 @@ router.post('/student',(req,res)=>{
 //Get Student from the database
 router.post('/student/login',(req,res)=>{
     if(!req.query.studentID){
-        return res.status(400).send('Missing parameters: email')
+        return res.status(400).send('Missing parameters: StudentID')
     }
     Student.findOne({
         studentID:req.query.studentID
