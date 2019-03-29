@@ -54,6 +54,13 @@ newCourse.save(function(err){
 
 //Get Single Course
 router.get('/attendance_session/:id',(req,res)=>{
+    // Getting today's date
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = mm + '/' + dd + '/' + yyyy;
+
     User.findById(req.user._id,(err,data)=>{
         if(err) throw err
         Course.findById(req.params.id,(err,course)=>{
@@ -65,10 +72,19 @@ router.get('/attendance_session/:id',(req,res)=>{
                     isAdmin:data.isAdmin, 
                     user_name:data.name.lastName,
                     course:course,
-                    students:students
+                    students:students,
+                    today:today
                 });
             });
         });
+    });
+});
+
+// Delete course
+router.delete('/delete-course/:id',(req,res)=>{
+    Course.findOneAndRemove({_id:req.params.id},(err)=>{
+        if(err) throw err
+        console.log('Coursse deleted successfully');
     });
 });
 

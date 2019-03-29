@@ -69,10 +69,10 @@ block content
                                                                 a.icon(href='javascript:void(0)', data-toggle='dropdown')
                                                                     i.fe.fe-more-vertical
                                                                 .dropdown-menu.dropdown-menu-right
-                                                                    a.dropdown-item(href='javascript:void(0)')
+                                                                    a.dropdown-item(href="/users/edit/"+user._id)
                                                                         i.dropdown-icon.fe.fe-edit
                                                                         |  Update
-                                                                    a.dropdown-item(href='javascript:void(0)')
+                                                                    a.dropdown-item.delete-user(href='#', data-id=user._id)
                                                                         i.dropdown-icon.fe.fe-trash
                                                                         |  Delete
                   
@@ -138,16 +138,16 @@ block content
                                                 tr
                                                     th Code
                                                     th Title
-                                                    th(colspan='2') Action
+                                                    //- th(colspan='2') Action
                                             tbody
                                                 each course, i in courses
                                                     tr
                                                         td= course.code
                                                         td= course.title
-                                                        td.w-1
-                                                            a.icon(href='#')
-                                                                    i.fe.fe-edit
-                                                        td.w-1
-                                                            a.icon(href='#')
-                                                                    i.fe.fe-trash
+                                                        //- td.w-1
+                                                        //-     a.icon(href='#')
+                                                        //-         i.fe.fe-edit
+                                                        //- td.w-1
+                                                        //-     a.icon.delete-course(href='/courses/delete-course/'+ course._id)
+                                                        //-         i.fe.fe-trash
                          

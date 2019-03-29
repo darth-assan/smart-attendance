@@ -33,7 +33,7 @@ router.get('/admin',(req,res)=>{
             Course.find({},(err,data2)=>{
                 if (err) throw err
                     User.findById(req.user._id,(err,data3)=>{
-                        if(err) throw err
+                        if(err) throw new Error("BROKEN");
                         res.render('admin',{
                             title:'Admin',
                             total_users: data.length,
@@ -111,7 +111,7 @@ bcrypt.genSalt(10,function(err,salt){
 //Get Add Courses
 router.get('/add_courses',(req,res)=>{
     User.findById(req.user._id,(err,data)=>{
-        if(err) throw err
+        if(err)  new Error("BROKEN");
             Course.find({},(err,data1)=>{
                 if (err) throw err
                 req.flash('warning','DISABLED COURSES HAVE ALREADY BEEN ASSIGNED TO OTHER USER')
@@ -137,10 +137,106 @@ router.post('/add_courses',(req,res)=>{
     res.redirect('/users/dashboard');
 });
 
+//Load user edit form (admin)
+router.get('/edit/:id', (req,res)=>{
+    User.findById(req.params.id,(err,data)=>{
+        if (err) throw err
+        User.findById(req.user._id,(err,result)=>{
+            if (err) throw err
+            if(result.isAdmin == false){
+                req.flash('danger','Not Authorized');
+                res.redirect('/');
+            }else{
+                res.render('edit_user',{
+                    title:'Edit User',
+                    user:data,
+                    user_name:result.name.lastName
+                });
+            }
+        });
+    });
+});
+
+//Update user edit post (admin)
+router.post('/edit/:id',[
+    check('email').isEmail(),
+    check('firstName').isString(),
+    check('lastName').isString(),
+    check('passwordReset').isString()
+],(req,res)=>{
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('danger','Something went wrong. Check your input and retry.');
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    const email = req.body.email;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const password =req.body.passwordReset;
+
+    let user = {
+        name:{
+            firstName:firstName,
+            lastName:lastName
+        },
+        email:email,
+        password:password
+    }
+
+    bcrypt.genSalt(10,function(err,salt){
+        if(err) throw err
+        if(user.password == "true"){
+            user.password = user.name.firstName + user.name.lastName;
+            console.log(password)
+
+            bcrypt.hash(user.password,salt, function(err,hash){
+                if(err) throw err
+                user.password = hash;
+                let query = {_id:req.params.id}
+    
+                User.update(query,user,(err)=>{
+                    if(err){
+                        console.log(err);
+                        return;
+                    }else{
+                        req.flash('success','Updated Successfully')
+                        res.redirect('/users/edit/'+req.params.id)
+                    }
+                })
+            });
+        }
+    });
+ });
+
+// Delete user (Admin)
+router.delete('/delete/:id', function(req,res){
+    if(!req.user._id){
+        res.status(500).send();
+    }
+
+    User.findById(req.params.id,function(err,data){
+        if (err) throw err
+        User.findById(req.user._id,(err,result)=>{
+            if (err) throw err
+            if(result.isAdmin == false){
+                req.flash('danger','Not Authorized');
+                res.redirect('/');
+            }else{
+            let query = {_id:req.params.id}
+            User.remove(query,(err)=>{
+                if(err) throw err
+                res.send('Success');
+            });
+        }
+    });
+});
+});
+
 // Get user dashboard
 router.get('/dashboard',(req,res)=>{
     User.findById(req.user._id,(err,data)=>{
-        if(err) throw err
+        if(err) throw new Error("BROKEN");
             Course.find({assigned:req.user._id},(err,data1)=>{
                 if (err) throw err
                 res.render('dashboard',{

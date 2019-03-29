@@ -38,10 +38,11 @@ body
                     .container
                         .row.align-items-center
                             .col-lg-3.text-lg-right
-                                label.custom-switch
-                                    input.custom-switch-input(type='checkbox' name='custom-switch-checkbox')
-                                    span.custom-switch-indicator
-                                    span.custom-switch-description Authorize Attendance
+                                -if(title === 'Attendance Session')
+                                    label.custom-switch
+                                        input.custom-switch-input(type='checkbox' id='authorize' name='authorize' checked=false)
+                                        span.custom-switch-indicator
+                                        span.custom-switch-description Authorize Attendance
                             .col-lg.order-lg-first
                                 ul.nav.nav-tabs.border-0.flex-column.flex-lg-row
                                     li.nav-item
@@ -63,6 +64,7 @@ script(src="/vendor/js/dashboard.js")
 script(src="/vendor/js/require.min.js")  
 script(src="/vendor/timepicker/jquery-clockpicker.min.js")    
 script(src="/vendor/timepicker/bootstrap-clockpicker.minn.js")  
+script(src="/main.js") 
 
 script(type='text/javascript').
     $('.clockpicker').clockpicker({

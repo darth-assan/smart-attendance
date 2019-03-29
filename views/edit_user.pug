@@ -1,0 +1,35 @@
+extends layout
+
+block content
+     .my-3.my-md-5 
+        .container
+            .col-md-12
+                h1 Update User Page
+                != messages('message',locals)
+                .row
+                    .col-md-12
+                        form.card(method="POST", id="updateForm", action="/users/edit/"+user._id)
+                                .card-body
+                                    h3.card-title Update User
+                                    .row
+                                        .col-md-6
+                                                .form-group
+                                                    label.form-label First Name
+                                                    input.form-control(name='firstName', type='text', value=user.name.firstName)
+                                        .col-md-6
+                                                .form-group
+                                                    label.form-label Last Name 
+                                                    input.form-control(name='lastName', type='text', value=user.name.lastName)
+                                        .col-md-12
+                                                .form-group
+                                                    label.form-label Email Address
+                                                    input.form-control(name='email', type='email', value=user.email)
+                                        .col-md-12
+                                                .form-group
+                                                    label.custom-switch
+                                                        input.custom-switch-input(type='checkbox', name='passwordReset' value="true" checked)
+                                                        span.custom-switch-indicator
+                                                        span.custom-switch-description Reset User Password
+                                .card-footer.d-flex
+                                    button.btn.btn-dark(type='reset') Cancel
+                                    button.btn.btn-warning.ml-auto(type="button" data-toggle='modal', data-target='#updateModal') update User

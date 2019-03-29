@@ -14,6 +14,7 @@ block content
                                     td.w-1 Add
                                     td Course Code
                                     td course Title
+                                    td Day
                                     td Duration
                                     td Time
                                     td Venue
@@ -29,6 +30,19 @@ block content
                                             strong= course.code
                                         td 
                                             strong= course.title
+                                        case (course.day)
+                                            when 1
+                                                td Monday
+                                            when 2
+                                                td Tuesday
+                                            when 3
+                                                td Wednesday
+                                            when 4
+                                                td Thursday
+                                            when 5
+                                                td Friday
+                                            default 
+                                                td No day
                                         td.text-muted= course.duration
                                         td.text-muted= course.time
                                         td= course.venue

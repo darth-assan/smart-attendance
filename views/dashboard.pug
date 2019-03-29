@@ -60,12 +60,26 @@ block content
                                 a.card-aside-column.code(style='background-color: cyan')= course.code
                                 .card-body.d-flex.flex-column
                                     h5= course.title
-                                    .text-muted.row
-
-                                        .text-center
-                                            i.fe.fe-map-pin
-                                            span=   course.venue
-                                        .ml-4
-                                            i.fe.fe-watch
-                                            span=   course.duration
+                                    .text-muted
+                                        i.fe.fe-map-pin
+                                        span=   course.venue 
+                                        br
+                                        i.fe.fe-watch
+                                        span=   course.duration
+                                        span.ml-4
+                                        i.fe.fe-calendar
+                                        case (course.day)
+                                            when 1
+                                                span Monday
+                                            when 2
+                                                span Tuesday
+                                            when 3
+                                                span Wednesday
+                                            when 4
+                                                span Thursday
+                                            when 5
+                                                span Friday
+                                            default 
+                                                span Not defined
+                                            
             

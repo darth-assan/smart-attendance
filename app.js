@@ -1,9 +1,11 @@
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session');
+// const morgan = require('morgan'); For development purposes
 
 // Database connection
 const config = require('./config/database')
@@ -68,7 +70,17 @@ app.use(express.static(path.join(__dirname,'public')));
 app.get('*', function(req,res,next){
     res.locals.user = req.user || null;
     next();
-})
+});
+
+// // log only 4xx and 5xx responses to console
+// app.use(morgan('dev', {
+//     skip: function (req, res) { return res.statusCode < 400 }
+//   }))
+   
+// // log all requests to access.log
+// app.use(morgan('common', {
+//     stream: fs.createWriteStream(path.join(__dirname, 'logs/access.log'), { flags: 'a' })
+//   }))
 
 //Home route
 app.get('/',(req,res)=>{
@@ -80,7 +92,7 @@ app.get('/',(req,res)=>{
 // Route Files
 let users = require('./routes/users');
 let courses = require('./routes/courses');
-let api = require('./api/api');
+let api = require('./routes/api/api');
 
 app.use('/users', users);
 app.use('/courses',courses);
