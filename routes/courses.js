@@ -8,6 +8,8 @@ let User = require('../models/user');
 let Course = require('../models/course');
 // bring in student model
 let Student = require('../models/student');
+// bring in attendance model
+let Attendace = require('../models/attendance');
 
 // Register Courses
 router.post('/register',[
@@ -79,6 +81,29 @@ router.get('/attendance_session/:id',(req,res)=>{
         });
     });
 });
+
+//Create attendance object in db
+router.post('/attendance_session/:id',(req,res)=>{
+    // Getting today's date
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = mm + '/' + dd + '/' + yyyy;
+    
+    let newAttendace = new Attendace({
+        date:today,
+        courseId:req.params.id
+    }).save((err)=>{
+        if(err){
+            console.log(err)
+        }else{
+            req.flash('success','Attendace session authorized successfully.')
+            res.redirect(req.originalUrl)
+        }
+    });
+});
+
 
 // Delete course
 router.delete('/delete-course/:id',(req,res)=>{

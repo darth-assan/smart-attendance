@@ -4,6 +4,7 @@ const router = express.Router();
 // bring in student model
 let Student = require('../../models/student');
 let Course = require('../../models/course');
+let Attendace = require('../../models/attendance');
 //Post Student registeration data
 router.post('/student',(req,res)=>{
     if(!req.body){
@@ -44,23 +45,8 @@ router.post('/student/login',(req,res)=>{
 
 // logging attendance
 router.put('/student/attendace/',(req,res)=>{
-    if(req.query){
-        let query = req.query.courseId
-        let attendance = {
-            attendance:[{
-                students:req.query.studentId
-            }]
-        }
-
-        Course.findOneAndUpdate(
-            {_id: query},
-            {attendance:attendance},
-            (err,data)=>{
-                console.log(err);
-            }
-        )
-       
-    }
+    // push student ID's to the page. 
+    
 });
 
 module.exports = router;

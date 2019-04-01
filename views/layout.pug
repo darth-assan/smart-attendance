@@ -39,10 +39,13 @@ body
                         .row.align-items-center
                             .col-lg-3.text-lg-right
                                 -if(title === 'Attendance Session')
-                                    label.custom-switch
-                                        input.custom-switch-input(type='checkbox' id='authorize' name='authorize' checked=false)
-                                        span.custom-switch-indicator
-                                        span.custom-switch-description Authorize Attendance
+                                    form(action="/courses/attendance_session/"+course._id, method="post", id="authorizeForm")
+                                        //- label.custom-switch
+                                        //-     input.custom-switch-input.authorize(type='checkbox' name='isAuthorized' value='isTrue')
+                                        //-     span.custom-switch-indicator
+                                        //-     span.custom-switch-description Authorize Attendance
+                                        input.btn.btn-teal.btn-sm(type='submit' value="Authorize Attendance")
+
                             .col-lg.order-lg-first
                                 ul.nav.nav-tabs.border-0.flex-column.flex-lg-row
                                     li.nav-item

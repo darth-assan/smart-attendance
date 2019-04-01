@@ -31,14 +31,7 @@ const courseSchema = mongoose.Schema({
     assigned: {
         type: mongoose.Types.ObjectId,
         default: null
-    },
-    attendance:[{
-        date:{
-            type: Date,
-            require: true
-        },
-        students:mongoose.Types.ObjectId
-    }]
+    }
 },{timestamps: true});
 
 const Course = module.exports = mongoose.model('courses', courseSchema);
