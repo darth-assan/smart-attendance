@@ -141,6 +141,38 @@ router.post('/attendance_session/:id',(req,res)=>{
 
 });
 
+//Get students present
+router.get('/attendance_session/:id/stats',async(req,res)=>{
+    // Getting today's date
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = mm + '/' + dd + '/' + yyyy;
+    
+    const user = await User.findById(req.user._id);
+    const course = await Course.findById(req.params.id);
+    const attendance = await Attendace.findOne({date: new Date(today), courseId: req.params.id});
+    const attendanceIds = attendance.students.map( student => student );
+
+    Student.find({ _id: { $in:attendanceIds}},(err,preStudents)=>{
+        if (err) throw err
+        Student.find({ _id: { $nin:attendanceIds}},(err,abStudents)=>{
+            if (err) throw err
+            res.render('current_session',{
+                title:'Attendance Session',
+                isAdmin:user.isAdmin, 
+                course:course,
+                user_name:user.name.lastName,
+                preStudents:preStudents,
+                abStudents:abStudents,
+                today:today
+            });
+        });
+    });
+});
+
+
 // Delete course
 router.delete('/delete-course/:id',(req,res)=>{
     Course.findOneAndRemove({_id:req.params.id},(err)=>{

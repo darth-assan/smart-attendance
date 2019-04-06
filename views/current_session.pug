@@ -1,0 +1,57 @@
+extends layout
+
+block content
+     .my-3.my-md-5 
+        .container
+            .col-md-12
+                h1 Current Session Report
+                != messages('message',locals)
+                .row
+                    .col-12
+                        .card.p-3
+                            .d-flex.align-items-center
+                                .stamp.stamp-md.bg-blue.mr-3
+                                    i.fe.fe-paperclip
+                                div.text-left.col-md-9
+                                    h4.m-0
+                                        div= course.code
+                                        small= course.title
+                                div.text-right.col-md-2
+                                    h4.m-0
+                                        small= today
+                    .col-lg-6
+                        .card
+                            .card-status.card-status-top.bg-green
+                            .card-header
+                                h3.card-title Students Present
+                            .table-responsive
+                                table.table.card-table.table-striped.table-vcenter
+                                    thread
+                                        tr 
+                                            th Student ID
+                                            th Name
+                                            th Email
+                                    tbody
+                                        each student,i in preStudents
+                                            tr
+                                                td= student.studentId
+                                                td= student.name.lastName + " " + student.name.firstName
+                                                td= student.email
+                    .col-lg-6
+                        .card
+                            .card-status.card-status-top.bg-red
+                            .card-header
+                                h3.card-title Students Absent
+                            .table-responsive
+                                table.table.card-table.table-striped.table-vcenter
+                                    thread
+                                        tr 
+                                            th Student ID
+                                            th Name
+                                            th Email
+                                    tbody
+                                        each student,i in abStudents
+                                            tr
+                                                td= student.studentId
+                                                td= student.name.lastName + " " + student.name.firstName
+                                                td= student.email

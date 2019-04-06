@@ -38,7 +38,7 @@ block content
                         .card-status.card-status-left.bg-green
                         .card-body.p-3.text-center
                             .text-right
-                                a.btn.btn-sm.btn-rounded.btn-green(href="#") view
+                                a.btn.btn-sm.btn-rounded.btn-green(href="/courses/attendance_session/" + course._id + "/stats") view
                                     i.fe.fe-external-link
                             .h-2
                             .h1.m-0= total_students_present
@@ -77,29 +77,3 @@ block content
                                                 a.btn.btn-sm.btn-rounded.btn-cyan(href="#") Records
                                                     i.fe.fe-link
             
-
-            // Button trigger modal
-            button.btn.btn-primary(type='button', data-toggle='modal', data-target='#exampleModalCenter')
-                | Launch demo modal
-            // Modal
-            #exampleModalCenter.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalCenterTitle', aria-hidden='true')
-                .modal-dialog.modal-dialog-centered(role='document')
-                    .modal-content
-                        .modal-header
-                                h5#exampleModalLongTitle.modal-title Students present for current session
-                                button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                    span(aria-hidden='true')
-                        .modal-body
-                            .card-body.o-auto
-                                    ul.list-unstyled.list-separated
-                                    
-                                        li.list-separated-item
-                                            .row.align-items-center
-                                                .col
-                                                    div
-                                                        //- a.text-inherit.text-capitalize(href='javascript:void(0)')= student.name.firstName + " " + student.name.lastName
-                                                    //- small.d-block.item-except.text-sm.text-muted.h-1x= student.studentId
-
-
-                        .modal-footer
-                                button.btn.btn-sm.btn-dark(type='button', data-dismiss='modal') Close
