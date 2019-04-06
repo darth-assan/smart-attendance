@@ -1,52 +1,120 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const router = express.Router();
 
-// bring in student model
+// bring in db models
 let Student = require('../../models/student');
 let Course = require('../../models/course');
 let Attendace = require('../../models/attendance');
-//Post Student registeration data
-router.post('/student',(req,res)=>{
+
+// Student registeration 
+router.post('/student/register',(req,res)=>{
     if(!req.body){
         return res.status(400),send('Request Body Required');
     }
 
-    let student = new Student(req.body)
-    student.save()
-    .then(data=>{
-        if(!data || data.length === 0){
-            return res.status(500).send(data);
-        }
+    const email = req.body.email;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const pin = req.body.pin;
+    const studentId = req.body.studentId;
+
+    let newStudent = new Student({
+        name:{
+            firstName:firstName,
+            lastName:lastName
+        },
+        email:email,
+        studentId:studentId,
+        pin:pin
+    });
+
+    bcrypt.hash(newStudent.pin,10,function(err,hash){
+        if(err) throw err
+        newStudent.pin = hash;
+        newStudent.save()
+        .then(data=>{
+            if(!data || data.length === 0){
+                return res.status(500).send(data);
+            }else{
+                res.status(201).send(data);
+                console.log('Student added successfully')
+            }
+        })
+        .catch(err =>{
+            res.status(500).json(err)
+        });
+    });
+});
+
+// Register courses
+router.post('/student/add_courses/',(req,res)=>{
+    Student.findByIdAndUpdate({_id:req.query._id},{courses:req.body.courses},(err,data)=>{
+        if(err) throw err
+        console.log('course added successfully');
         res.status(201).send(data);
-    })
-    .catch(err =>{
-        res.status(500).json(err)
+    });
+});
+
+//Get all courses
+router.get('/student/add_courses',(req,res)=>{
+    Course.find({},(err,data)=>{
+        if(err) throw err
+        res.send(data)
     })
 });
 
-//Get Students from the database
+//login
 router.post('/student/login',(req,res)=>{
-    if(!req.body.email && !req.body.password){
+    if(!req.body.studentId && !req.body.pin){
         console.log('Error Occured. req.body is empty!');
-        return res.status(400).send('Missing parameters: email and password')
+        return res.status(400).send('Missing parameters: studentId and PIN')
     }
-    Student.findOne({
-        email:req.body.email,
-        password:req.body.password
-    })
+
+    Student.findOne({studentId:req.body.studentId})
     .then(data=>{
-        console.log(data.name.lastName)
-        res.json(data)
+        if(data == null){
+            console.log("user do not exists")
+        }else{
+            let pin = req.body.pin
+            // Match Password
+            bcrypt.compare(pin,data.pin,function(err,isMatch){
+                if(err) throw err;
+                if(isMatch){
+                    console.log(data.name.lastName)
+                    res.json(data)
+                }else{
+                    console.log('PIN Incorrect')
+                }
+            });
+        }
     })
     .catch(err=>{
         res.status(500).json(err)
     })
 });
 
-// logging attendance
+// logging attendance in db
 router.put('/student/attendace/',(req,res)=>{
-    // push student ID's to the page. 
-    
+    Attendace.findOneAndUpdate({
+        courseId:req.query.courseId},
+        { $push: { students: req.query.studentId } 
+    })
+    .then(data=>{
+        if(data == null){
+            console.log("session do not exists")
+            res.redirect(req.originalUrl)
+        }else{
+            console.log(data)
+            console.log("saved successfully")
+            res.json(data)
+        }
+    })
+    .catch(err=>{
+        res.status(500).json(err)
+    })
 });
+
+
 
 module.exports = router;

@@ -7,7 +7,7 @@ const passport = require('passport');
 
 // bring in user model
 let User = require('../models/user');
-// bring in user model
+// bring in courses model
 let Course = require('../models/course');
 
 // Login Process
@@ -129,12 +129,18 @@ router.get('/add_courses',(req,res)=>{
 router.post('/add_courses',(req,res)=>{
     //let selected = req.body.selected
     // console.log(selected)
-    [req.body.selected].forEach(element => {
-        Course.findByIdAndUpdate(element,{assigned:req.user._id},(err)=>{
-            if (err) throw err
-        });
+    // [req.body.selected].forEach(element => {
+    //     Course.findByIdAndUpdate(element,{assigned:req.user._id},(err)=>{
+    //         if (err) throw err
+    //     });
+    // });
+    console.log(req.body.selected)  
+    console.log(req.body.user)
+    Course.findByIdAndUpdate({_id:req.body.selected},{assigned:req.body.user},(err)=>{
+        if(err) throw err
     });
-    res.redirect('/users/dashboard');
+    req.flash('success','course assigned successfully')
+    res.redirect('/users/admin/?_id='+ req.user._id);
 });
 
 //Load user edit form (admin)

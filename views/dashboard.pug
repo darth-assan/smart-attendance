@@ -1,6 +1,13 @@
 extends layout
 
 block content
+    //- script.
+    //-     $(document).ready(function(){
+    //-         $("#enableView").click(function(){
+    //-             $("#view").removeClass("disabled");
+    //-         });
+    //-     });
+
     .my-3.my-md-5   
         .container  
             .page-header
@@ -8,6 +15,7 @@ block content
                     h1 Dashboard
                 
             != messages('message',locals)
+
             .col-md-12
                 .card(class=(new Date().getDay() == 0 || new Date().getDay() == 6 ? "   card-collapsed" : undefined))
                     .card-status.bg-yellow
@@ -40,7 +48,16 @@ block content
                                                         td= course.time
                                                         td= course.venue
                                                         td.text-right
-                                                            a.btn.btn-dark.btn-sm(href="/courses/attendance_session/"+course._id) Enter
+                                                            .btn-list.text-center
+                                                                form(action="/courses/attendance_session/"+course._id, method="post")
+                                                                    button.btn.btn-warning.btn-sm.btn-square(type='submit')
+                                                                        i.fe.fe-check-circle.mr-2
+                                                                        | Authorize
+                                                                        
+                                                                    a.btn.btn-dark.btn-sm.btn-square(type='button',href="/courses/attendance_session/"+course._id)
+                                                                        i.fe.fe-eye.mr-2
+                                                                        | view
+
 
 
 

@@ -15,7 +15,7 @@ const studentSchema = mongoose.Schema({
         }
         
     },
-    id:String,
+    studentId:String,
     email: {
         type: String, 
         lowercase: true, 
@@ -25,7 +25,7 @@ const studentSchema = mongoose.Schema({
         index: true,
         lowercase: true,
     },
-    password:{
+    pin:{
         type:String,
         require:true
     },

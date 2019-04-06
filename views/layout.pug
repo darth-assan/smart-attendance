@@ -38,24 +38,28 @@ body
                     .container
                         .row.align-items-center
                             .col-lg-3.text-lg-right
-                                -if(title === 'Attendance Session')
-                                    form(action="/courses/attendance_session/"+course._id, method="post", id="authorizeForm")
-                                        //- label.custom-switch
-                                        //-     input.custom-switch-input.authorize(type='checkbox' name='isAuthorized' value='isTrue')
-                                        //-     span.custom-switch-indicator
-                                        //-     span.custom-switch-description Authorize Attendance
-                                        input.btn.btn-teal.btn-sm(type='submit' value="Authorize Attendance")
+                                - let date = new Date();
+                                - date = date.toDateString();
+                                    i.fe.fe-calendar.mr-2
+                                    = date
+                            //-     -if(title === 'Attendance Session')
+                            //-         form(action="/courses/attendance_session/"+course._id, method="post", id="authorizeForm")
+                            //-             //- label.custom-switch
+                            //-             //-     input.custom-switch-input.authorize(type='checkbox' name='isAuthorized' value='isTrue')
+                            //-             //-     span.custom-switch-indicator
+                            //-             //-     span.custom-switch-description Authorize Attendance
+                            //-             input.btn.btn-teal.btn-sm(type='submit' value="Authorize Attendance")
 
                             .col-lg.order-lg-first
                                 ul.nav.nav-tabs.border-0.flex-column.flex-lg-row
                                     li.nav-item
-                                        a.nav-link(class=(title == "Dashboard" ? "active" : undefined) href='/users/dashboard')
+                                        a.nav-link(class=(title !== null ? "active" : undefined) href='/users/dashboard')
                                             i.fe.fe-home
                                             |  Home
-                                    li.nav-item
-                                        a.nav-link(class=(title == "Add Courses" ? "active" : undefined) href='/users/add_courses')
-                                            i.fe.fe-check-square
-                                            | Add Courses
+                                    //- li.nav-item
+                                    //-     a.nav-link(class=(title == "Add Courses" ? "active" : undefined) href='/users/add_courses')
+                                    //-         i.fe.fe-check-square
+                                    //-         | Add Courses
                                
             block content
         include includes/footer.pug

@@ -49,6 +49,7 @@ block content
                                     .card-footer.d-flex
                                         button.btn.btn-danger(type='reset') Cancel
                                         button.btn.btn-success.ml-auto(type='submit') Add User
+                                        
                         .col-md-12
                             .card
                                 .card-header
@@ -75,8 +76,6 @@ block content
                                                                     a.dropdown-item.delete-user(href='#', data-id=user._id)
                                                                         i.dropdown-icon.fe.fe-trash
                                                                         |  Delete
-                  
-            
 
                 .col-md-5
                     .row
@@ -129,7 +128,7 @@ block content
                                 .card-footer.text-center
                                     button.btn.btn-success(type='submit') Add Course
                         .col-lg-12
-                            .card
+                            .card(style='height: 19rem')
                                 .card-header
                                     h3.card-title Courses' List
                                 .table-responsive
@@ -150,4 +149,62 @@ block content
                                                         //- td.w-1
                                                         //-     a.icon.delete-course(href='/courses/delete-course/'+ course._id)
                                                         //-         i.fe.fe-trash
-                         
+            .col-lg-12
+                .table-responsive
+                    form.form.card(method="POST", action="/users/add_courses")
+                         .card-body
+                            h3.card-title Assign Course
+
+                            .alert.alert-icon.alert-danger(role='alert')
+                                i.fe.fe-alert-triangle.mr-2(aria-hidden='true')
+                                |  Disabled courses have already been assigned to a user.
+
+                            .row
+                                .col-md-12
+                                    .form-group
+                                        label.form-label Select User
+                                        select#select-beast.form-control.custom-select(name='user')
+                                            each user,i in users
+                                                option(value= user._id)= user.name.firstName +" "+ user.name.lastName
+
+                            table.table.card-table.table-vcenter.table-striped
+                                thead.text-muted.text-uppercase
+                                    tr
+                                        td.w-1 Add
+                                        td Course Code
+                                        td course Title
+                                        td Day
+                                        td Duration
+                                        td Time
+                                        td Venue
+                                tbody
+                                    each course,i in courses
+                                        tr.h-8
+                                            td
+                                                -var state = course.assigned
+                                                label.custom-control.custom-checkbox
+                                                    input.custom-control-input(type='checkbox', name='selected', value= course._id, disabled=(state !== null ? true : false), checked=(state !== null ? true : false))
+                                                    span.custom-control-label 
+                                            td 
+                                                strong= course.code
+                                            td 
+                                                strong= course.title
+                                            case (course.day)
+                                                when 1
+                                                    td Monday
+                                                when 2
+                                                    td Tuesday
+                                                when 3
+                                                    td Wednesday
+                                                when 4
+                                                    td Thursday
+                                                when 5
+                                                    td Friday
+                                                default 
+                                                    td No day
+                                            td.text-muted= course.duration
+                                            td.text-muted= course.time
+                                            td= course.venue
+                            .card-footer.text-center
+                                button.btn.btn-success.ml-auto(type='submit') Submit Selection
+                             

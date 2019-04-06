@@ -63,19 +63,29 @@ router.get('/attendance_session/:id',(req,res)=>{
     var yyyy = today.getFullYear();
     today = mm + '/' + dd + '/' + yyyy;
 
-    User.findById(req.user._id,(err,data)=>{
+    User.findById(req.user._id,(err,user)=>{
         if(err) throw err
         Course.findById(req.params.id,(err,course)=>{
-        if (err) throw err
+            if (err) throw err
             Student.find({ courses: { $in: [req.params.id]}},(err,students)=>{
                 if (err) throw err
-                res.render('attendance_session',{
-                    title:'Attendance Session',
-                    isAdmin:data.isAdmin, 
-                    user_name:data.name.lastName,
-                    course:course,
-                    students:students,
-                    today:today
+                Attendace.findOne({date:new Date(today),courseId:req.params.id},(err,att_data)=>{
+                    if (err) throw err
+                    if(att_data == null){
+                        req.flash('warning', 'Authorize attendance first')
+                        res.redirect('/users/dashboard/?_id='+ req.user._id);
+                    }else{
+                        res.render('attendance_session',{
+                            title:'Attendance Session',
+                            isAdmin:user.isAdmin, 
+                            user_name:user.name.lastName,
+                            course:course,
+                            students:students,
+                            total_students:students.length,
+                            total_students_present:att_data.students.length,
+                            today:today
+                        });
+                    }
                 });
             });
         });
@@ -89,21 +99,47 @@ router.post('/attendance_session/:id',(req,res)=>{
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
-    today = mm + '/' + dd + '/' + yyyy;
-    
-    let newAttendace = new Attendace({
-        date:today,
-        courseId:req.params.id
-    }).save((err)=>{
-        if(err){
-            console.log(err)
+    today = mm + '-' + dd + '-' + yyyy;
+
+    Attendace.findOne({courseId:req.params.id, date:new Date(today)},(err,results)=>{
+        if (err) throw err
+        if(results){
+            let d1 = new Date(today).getTime();
+            let d2 = results.date.getTime();
+            // console.log(today)
+            // console.log(results.date)
+            if (d1 !== d2){
+                let newAttendace = new Attendace({
+                    date:today,
+                    courseId:req.params.id
+                }).save((err)=>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        req.flash('success','Attendace session authorized successfully.')
+                        res.redirect('/users/dashboard/?_id='+ req.user._id)
+                    }
+                });
+            }else{
+                req.flash('warning','Session Already Exit');
+                res.redirect('/users/dashboard/?_id='+ req.user._id);
+            }
         }else{
-            req.flash('success','Attendace session authorized successfully.')
-            res.redirect(req.originalUrl)
+            let newAttendace = new Attendace({
+                date:today,
+                courseId:req.params.id
+            }).save((err)=>{
+                if(err){
+                    console.log(err)
+                }else{
+                    req.flash('success','Attendace session authorized successfully.')
+                    res.redirect('/users/dashboard/?_id='+ req.user._id)
+                }
+            });
         }
     });
-});
 
+});
 
 // Delete course
 router.delete('/delete-course/:id',(req,res)=>{

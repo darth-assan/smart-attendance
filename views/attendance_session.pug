@@ -22,33 +22,36 @@ block content
                                 h4.m-0
                                     small= today
             .row.row-cards
+
                 .col-md-4
                     .card
                         .card-body.p-3.text-center
                             .text-right
-                                a.btn.btn-sm.btn-rounded.btn-teal(href="#") view
-                                    i.fe.fe-external-link
+                                .h-5
+                                //- a.btn.btn-sm.btn-rounded.btn-teal(href="#") view
+                                //-     i.fe.fe-external-link
                             .h-2
-                            .h1.m-0 43
+                            .h1.m-0= total_students
                             .text-muted.mb-4 Total number of students
                 .col-md-4
                     .card
+                        .card-status.card-status-left.bg-green
                         .card-body.p-3.text-center
                             .text-right
-                                a.btn.btn-sm.btn-rounded.btn-teal(href="#") view
+                                a.btn.btn-sm.btn-rounded.btn-green(href="#") view
                                     i.fe.fe-external-link
                             .h-2
-                            .h1.m-0 43
+                            .h1.m-0= total_students_present
                             .text-muted.mb-4 Students present
                 .col-md-4
                     .card
                         .card-status.card-status-left.bg-red
                         .card-body.p-3.text-center
                             .text-right
-                                a.btn.btn-sm.btn-rounded.btn-teal(href="#") view
+                                a.btn.btn-sm.btn-rounded.btn-red(href="#") view
                                     i.fe.fe-external-link
                             .h-2
-                            .h1.m-0 43
+                            .h1.m-0= total_students - total_students_present
                             .text-muted.mb-4 Students absent
 
 
@@ -62,13 +65,41 @@ block content
                                     tr 
                                         th Student ID
                                         th Name
-                                        th Current Status 
+                                        th Email
+                                        th
                                 tbody
                                     each student,i in students
                                         tr
-                                            td= student.id
+                                            td= student.studentId
                                             td= student.name.lastName + " " + student.name.firstName
-                                            td 
-                                                span.status-icon.bg-danger
-                                                |  not signed
+                                            td= student.email
+                                            td
+                                                a.btn.btn-sm.btn-rounded.btn-cyan(href="#") Records
+                                                    i.fe.fe-link
             
+
+            // Button trigger modal
+            button.btn.btn-primary(type='button', data-toggle='modal', data-target='#exampleModalCenter')
+                | Launch demo modal
+            // Modal
+            #exampleModalCenter.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalCenterTitle', aria-hidden='true')
+                .modal-dialog.modal-dialog-centered(role='document')
+                    .modal-content
+                        .modal-header
+                                h5#exampleModalLongTitle.modal-title Students present for current session
+                                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                    span(aria-hidden='true')
+                        .modal-body
+                            .card-body.o-auto
+                                    ul.list-unstyled.list-separated
+                                    
+                                        li.list-separated-item
+                                            .row.align-items-center
+                                                .col
+                                                    div
+                                                        //- a.text-inherit.text-capitalize(href='javascript:void(0)')= student.name.firstName + " " + student.name.lastName
+                                                    //- small.d-block.item-except.text-sm.text-muted.h-1x= student.studentId
+
+
+                        .modal-footer
+                                button.btn.btn-sm.btn-dark(type='button', data-dismiss='modal') Close

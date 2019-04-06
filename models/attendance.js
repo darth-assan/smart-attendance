@@ -7,16 +7,6 @@ const attendanceSchema = mongoose.Schema({
         type:Date,
         require: true
     },
-    // time:{
-    //     startTime:{
-    //         type: Date,
-    //         require: true
-    //     },
-    //     EndTime:{
-    //         type: Date,
-    //         require:true
-    //     }
-    // },
     students:[{
         type: mongoose.Schema.Types.ObjectId,
         default:null
