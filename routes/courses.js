@@ -181,5 +181,91 @@ router.delete('/delete-course/:id',(req,res)=>{
     });
 });
 
+// Reset courses
+router.post('/reset_courses',(req,res)=>{
+    Course.updateMany({},{assigned:null},(err)=>{
+        if (err) throw err
+        req.flash('success','Courses reset successful')
+        res.redirect('/users/admin/?_id='+ req.user._id);
+    });
+});
+
+//Edit courses
+router.get('/edit_course/:id', (req,res)=>{
+    Course.findById(req.params.id,(err,data)=>{
+        if (err) throw err
+        User.findById(req.user._id,(err,result)=>{
+            if (err) throw err
+            if(result.isAdmin == false){
+                req.flash('danger','Not Authorized');
+                res.redirect('/');
+            }else{
+                res.render('edit_course',{
+                    title:'Edit Course',
+                    course:data,
+                    user_name:result.name.lastName
+                });
+            }
+        });
+    });
+});
+
+// Update Courses
+router.post('/edit_course/:id',[
+    check('code').isString(),
+    check('title').isString(),
+    check('duration').isString(),
+    check('time').isString(),
+    check('venue').isString(),
+    check('day').isNumeric()
+],(req,res)=>{
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('danger','Edit unsuccessful. Try Again !');
+        // return res.status(422).json({ errors: errors.array() });
+        return res.redirect(req.originalUrl);
+    }
+
+    const code = req.body.code;
+    const title = req.body.title;
+    const duration = req.body.duration;
+    const time = req.body.time;
+    const venue = req.body.venue;
+    const day = req.body.day;
+
+
+let course = {
+    code:code,
+    title:title,
+    duration:duration,
+    time:time,
+    venue:venue,
+    day:day
+};
+
+let query = {_id:req.params.id}
+
+Course.update(query,course,(err)=>{
+    if(err){
+        console.log(err);
+        return;
+    }else{
+        req.flash('success','Updated Successfully')
+        res.redirect('/courses/edit_course/'+req.params.id)
+    }
+})
+
+});
+
+// Delete course
+router.post('/delete_course/:id',(req,res)=>{
+    let query = {_id:req.params.id};
+    Course.findByIdAndDelete(query,(err)=>{
+        if (err) throw err
+        req.flash('success','Course Successfully Deleted')
+        res.redirect('/users/admin/?='+req.user.id)
+    });
+})
+
 
 module.exports = router;

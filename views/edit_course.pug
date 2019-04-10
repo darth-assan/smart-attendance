@@ -1,0 +1,91 @@
+extends layout
+
+block content
+     .my-3.my-md-5 
+        .container
+            .col-md-12
+                h1 Edit Course Page
+                != messages('message',locals)
+                .row
+                    .col-md-12
+                        .card
+                            .card-header
+                                h3.card-title Edit Course
+                                .card-options
+                                    form(method="POST", id="deleteCourseForm", action="/courses/delete_course/"+course._id)
+                                        button.btn.btn-danger.btn-sm(type='submit' form="deleteCourseForm")
+                                            i.fe.fe-trash.mr-2
+                                            |   Delete Course
+
+                            .card-body
+                                form(method="POST", id="editCourseForm", action="/courses/edit_course/"+course._id)
+                                    .row
+                                        .col-md-4
+                                                .form-group
+                                                    label.form-label  Code 
+                                                    input.form-control(name='code', type='text', value=course.code)
+                                        .col-md-8
+                                                .form-group
+                                                    label.form-label  Title
+                                                    input.form-control(name='title', type='text', value=course.title)
+                                        .col-md-4
+                                                .form-group
+                                                    label.form-label Duration
+                                                    select.form-control(name="duration")
+                                                        option(value=course.duration selected)= course.duration
+                                                        option(value="2 Hours") 2 Hours
+                                                        option(value="1 Hours") 1 Hour 
+                                        .col-md-4
+                                                .form-group
+                                                    label.form-label Time
+                                                    .input-group.clockpicker(data-placement="right" data-align="top" data-autoclose="true")
+                                                        input.form-control(type='text', value=course.time, name='time')
+                                                        span.input-group-append
+                                                            span.input-group-text.fe.fe-watch
+                                                    
+                                        .col-md-4
+                                                .form-group
+                                                    label.form-label Day
+                                                    select.form-control(name="day")
+                                                        case (course.day)
+                                                            when 1
+                                                                option(value=course.day) Monday
+                                                            when 2
+                                                                option(value=course.day) Tuesday
+                                                            when 3
+                                                                option(value=course.day) Wednesday
+                                                            when 4
+                                                                option(value=course.day) Thursday
+                                                            when 5
+                                                                option(value=course.day) Friday
+                                                        option(value=1) Monday
+                                                        option(value=2) Tuesday 
+                                                        option(value=3) Wednesday 
+                                                        option(value=4) Thursday 
+                                                        option(value=5) Friday 
+                                        .col-md-12
+                                                .form-group
+                                                    label.form-label Venue
+                                                    select.form-control(name="venue")
+                                                        option(value=course.venue selected)= course.venue
+                                                        option(value="Software Lab") Software Lab
+                                                        option(value="Chinese Lab") Chinese Lab
+                                                        option(value="Hardware Lab") Hardware Lab
+                            .card-footer.d-flex
+                                button.btn.btn-dark(type='reset') Cancel
+                                button.btn.btn-warning.ml-auto(type="button" data-toggle='modal', data-target='#editCourse') Submit Changes
+            
+            //- Modal
+            #editCourse.modal.fade(tabindex='-1', role='dialog', aria-labelledby='updateModal', aria-hidden='true')
+                .modal-dialog.modal-sm(role='document')
+                    .modal-content
+                        .modal-header
+                                h5#exampleModalLongTitle.modal-title Edit Course
+                                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                    span(aria-hidden='true')
+                        .modal-body
+                            .alert.alert-warning(role='alert')
+                                | Do you really want to proceed with the update ?
+                        .modal-footer
+                            .text-center
+                                button.btn.btn-cyan(type='submit' form="editCourseForm") Agree

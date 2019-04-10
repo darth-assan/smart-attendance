@@ -18,7 +18,19 @@ block content
                                 .card-body.p-3.text-center
                                     .h1.m-0= total_courses
                                     .text-muted.mb-4 Total Number of Courses
-
+                        .col-md-12
+                            .card
+                                .card-header
+                                    h3.card-title Reset Courses
+                                .card-alert.alert.alert-warning.mb-0
+                                    | This action is not reversable
+                                .card-body.text-muted.font-italic
+                                    | This will clear all the courses assigned to all users.
+                                .card-footer.text-center
+                                    button.btn.btn-dark.btn-sm(type='button', data-toggle='modal', data-target='#exampleModal')
+                                        | Reset
+                                   
+                                
                 .col-md-5
                     .row
                         .col-md-12
@@ -137,25 +149,22 @@ block content
                                                 tr
                                                     th Code
                                                     th Title
-                                                    //- th(colspan='2') Action
+                                                    th(colspan='1') Action
                                             tbody
                                                 each course, i in courses
                                                     tr
                                                         td= course.code
                                                         td= course.title
-                                                        //- td.w-1
-                                                        //-     a.icon(href='#')
-                                                        //-         i.fe.fe-edit
-                                                        //- td.w-1
-                                                        //-     a.icon.delete-course(href='/courses/delete-course/'+ course._id)
-                                                        //-         i.fe.fe-trash
+                                                        td.w-1.text-center
+                                                            a.icon(href='/courses/edit_course/'+ course._id)
+                                                                i.fe.fe-edit
             .col-lg-12
                 .table-responsive
                     form.form.card(method="POST", action="/users/add_courses")
                          .card-body
                             h3.card-title Assign Course
 
-                            .alert.alert-icon.alert-danger(role='alert')
+                            .alert.alert-icon.alert-warning(role='alert')
                                 i.fe.fe-alert-triangle.mr-2(aria-hidden='true')
                                 |  Disabled courses have already been assigned to a user.
 
@@ -208,3 +217,24 @@ block content
                             .card-footer.text-center
                                 button.btn.btn-success.ml-auto(type='submit') Submit Selection
                              
+            //- Modal
+            #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                .modal-dialog.modal-sm(role='document')
+                    .modal-content
+                        .modal-header
+                            h5#exampleModalLabel.modal-title Reset Courses
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                span(aria-hidden='true') 
+                        .modal-body
+                            .alert.alert-icon.alert-danger(role='alert')
+                                i.fe.fe-alert-triangle.mr-2(aria-hidden='true')
+                                |  This action is not reversable. All courses assigned to users will be deleted.Do you want to proceed ?
+                                
+                                
+                        .modal-footer
+                            form(method="POST", action="/courses/reset_courses",id="reset-courses")
+                                button.btn.btn-warning.btn-sm(type='submit') 
+                                    i.fe.fe-refresh-ccw.mr-2 
+                                    |   RESET
+                            button.btn.btn-dark.btn-sm(type='button', data-dismiss='modal') Close
+

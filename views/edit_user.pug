@@ -33,3 +33,18 @@ block content
                                 .card-footer.d-flex
                                     button.btn.btn-dark(type='reset') Cancel
                                     button.btn.btn-warning.ml-auto(type="button" data-toggle='modal', data-target='#updateModal') update User
+            
+            //- Modal
+            #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='updateModal', aria-hidden='true')
+                .modal-dialog.modal-dialog-centered.modal-sm(role='document')
+                    .modal-content
+                        .modal-header
+                                h5#exampleModalLongTitle.modal-title Update User
+                                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                    span(aria-hidden='true')
+                        .modal-body
+                            .alert.alert-warning(role='alert')
+                                | Do you really want to proceed with the update ?
+                        .modal-footer
+                            .text-center
+                                button.btn.btn-warning(type='submit' form="updateForm") update User

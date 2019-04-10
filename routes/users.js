@@ -59,8 +59,7 @@ router.post('/register',[
     check('firstName').isString(),
     check('lastName').isString(),
     check('password').isLength({min:5}),
-    check('password2')
-        .isLength({min:5})
+    check('password2').isLength({min:5})
         .custom((value,{req}) => {
             if (value !== req.body.password) {
                 throw new Error("Passwords don't match");
@@ -126,21 +125,33 @@ router.get('/add_courses',(req,res)=>{
 });
 
 //Post courses selected
-router.post('/add_courses',(req,res)=>{
-    //let selected = req.body.selected
-    // console.log(selected)
-    // [req.body.selected].forEach(element => {
-    //     Course.findByIdAndUpdate(element,{assigned:req.user._id},(err)=>{
-    //         if (err) throw err
-    //     });
-    // });
-    console.log(req.body.selected)  
-    console.log(req.body.user)
-    Course.findByIdAndUpdate({_id:req.body.selected},{assigned:req.body.user},(err)=>{
-        if(err) throw err
-    });
-    req.flash('success','course assigned successfully')
-    res.redirect('/users/admin/?_id='+ req.user._id);
+router.post('/add_courses',[check('selected').exists()],(req,res)=>{
+    // Checking for error (empty submission)
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('danger','No course(s) selected.');
+        res.redirect('/users/admin/?_id='+ req.user._id);
+    }else{
+        let selected = req.body.selected;
+
+        if(Array.isArray(selected) == true){
+            req.body.selected.forEach(element => {
+                Course.findByIdAndUpdate(element,{assigned:req.body.user},(err)=>{
+                    if (err) throw err
+                });
+            });
+            req.flash('success','Courses assigned successfully')
+            res.redirect('/users/admin/?_id='+ req.user._id);
+        }else{
+            [req.body.selected].forEach(element => {
+                Course.findByIdAndUpdate(element,{assigned:req.body.user},(err)=>{
+                    if (err) throw err
+                });
+            });
+            req.flash('success','course assigned successfully')
+            res.redirect('/users/admin/?_id='+ req.user._id);
+        }
+    }
 });
 
 //Load user edit form (admin)
@@ -256,10 +267,128 @@ router.get('/dashboard',(req,res)=>{
 });
 
 // Profile
-router.get('/profile',(req,res)=>{
-    res.render('profile',{
-        title:'Profile'
+router.get('/profile/:id',(req,res)=>{
+    User.findById(req.params.id,(err,user)=>{
+        if(err) throw new Error("BROKEN");
+        Course.find({assigned:req.params.id},(err,courses)=>{
+            if (err) throw err
+            res.render('profile',{
+                title: 'Profile',
+                isAdmin:user.isAdmin,
+                user_name:user.name.lastName,
+                courses:courses,
+                user:user
+            });
+        });
     });
+});
+
+//Update profile (user)
+router.post('/edit_profile/:id',[
+    check('email').isEmail(),
+    check('firstName').isString(),
+    check('lastName').isString()
+],(req,res)=>{
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.flash('danger','Something went wrong. Check your input and retry.');
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    const email = req.body.email;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+
+    let user = {
+        name:{
+            firstName:firstName,
+            lastName:lastName
+        },
+        email:email
+    }
+    let query = {_id:req.params.id}
+    
+    User.update(query,user,(err)=>{
+        if(err){
+            console.log(err);
+            return;
+        }else{
+            req.flash('success','Profile Update Successful')
+            res.redirect('/users/profile/'+req.params.id)
+        }
+    });
+ });
+
+// Update password
+router.post('/update_password/:id',[
+    check('currentPass').exists(),
+    check('newPass').isLength({min:5}),
+    check('newPass2').isLength({min:5})
+        .custom((value,{req}) => {
+            if (value !== req.body.newPass) {
+                throw new Error("Passwords don't match");
+            } else {
+                return value;
+            }
+        })
+],(req,res)=>{
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        // return res.status(422).json({ errors: errors.array() });
+        req.flash('danger','Password Update Error: New password do not match.');
+        res.redirect('/users/profile/'+req.params.id);
+    }else{
+
+        const currentPass = req.body.currentPass;
+        const newPass = req.body.newPass;
+
+        // Check current password
+        User.findById(req.params.id,(err,data)=>{
+            if (err) throw err
+            // Match Password
+            bcrypt.compare(currentPass,data.password,function(err,isMatch){
+                if(err) throw err
+                if(isMatch){
+                    // Hash new password
+                    bcrypt.hash(newPass,10,function(err,hash){
+                        if(err) throw err
+                        User.findByIdAndUpdate(req.params.id,{password:hash},(err)=>{
+                            if(err) throw err;
+                            req.flash('success','Password Update Successful');
+                            res.redirect('/users/profile/'+req.params.id);
+                        });
+                    });
+                }else{
+                    req.flash('danger','Password Update Error: Current password Error. Try again !!');
+                    res.redirect('/users/profile/'+req.params.id);
+                }
+            });
+        });
+    }
+ });
+
+// Delete user (Admin)
+router.delete('/delete/:id', function(req,res){
+    if(!req.user._id){
+        res.status(500).send();
+    }
+
+    User.findById(req.params.id,function(err,data){
+        if (err) throw err
+        User.findById(req.user._id,(err,result)=>{
+            if (err) throw err
+            if(result.isAdmin == false){
+                req.flash('danger','Not Authorized');
+                res.redirect('/');
+            }else{
+            let query = {_id:req.params.id}
+            User.remove(query,(err)=>{
+                if(err) throw err
+                res.send('Success');
+            });
+        }
+    });
+});
 });
 
 // Logout
