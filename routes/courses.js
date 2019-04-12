@@ -149,27 +149,28 @@ router.get('/attendance_session/:id/stats',async(req,res)=>{
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
     today = mm + '/' + dd + '/' + yyyy;
-    
-    const user = await User.findById(req.user._id);
-    const course = await Course.findById(req.params.id);
-    const attendance = await Attendace.findOne({date: new Date(today), courseId: req.params.id});
-    const attendanceIds = attendance.students.map( student => student );
+    try {
+        const user = await User.findById(req.user._id);
+        const course = await Course.findById(req.params.id);
+        const attendance = await Attendace.findOne({date: new Date(today), courseId: req.params.id});
+        const preStudents = Student.find({ _id: { $in:attendanceIds}});
+        const abStudents = Student.find({ _id: { $nin:attendanceIds},courses: { $in: [req.params.id]}});
 
-    Student.find({ _id: { $in:attendanceIds}},(err,preStudents)=>{
-        if (err) throw err
-        Student.find({ _id: { $nin:attendanceIds},courses: { $in: [req.params.id]}},(err,abStudents)=>{
-            if (err) throw err
-            res.render('current_session',{
-                title:'Attendance Session',
-                isAdmin:user.isAdmin, 
-                course:course,
-                user_name:user.name.lastName,
-                preStudents:preStudents,
-                abStudents:abStudents,
-                today:today
-            });
+        const attendanceIds = attendance.students.map( student => student );
+   
+
+        res.render('current_session',{
+            title:'Attendance Session',
+            isAdmin:user.isAdmin, 
+            course:course,
+            user_name:user.name.lastName,
+            preStudents:preStudents,
+            abStudents:abStudents,
+            today:today
         });
-    });
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 
@@ -223,7 +224,7 @@ router.post('/edit_course/:id',[
     if (!errors.isEmpty()) {
         req.flash('danger','Edit unsuccessful. Try Again !');
         // return res.status(422).json({ errors: errors.array() });
-        return res.redirect(req.originalUrl);
+        return res.redirect(req.originalUrl)
     }
 
     const code = req.body.code;
@@ -275,24 +276,52 @@ router.get('/students/report/:id',async (req,res)=>{
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
     today = mm + '/' + dd + '/' + yyyy;
+    try {
+        const course = await Course.findById(req.query.course_id);
+        const student = await Student.findById(req.params.id);
+        const user = await User.findById(req.user._id);
+        const attendance = await Attendace.find({courseId:req.query.course_id});
+        const preAttendance = await Attendace.find({courseId:req.query.course_id,students:{ $in:req.params.id}});
 
-    const course = await Course.findById(req.query.course_id);
-    const student = await Student.findById(req.params.id);
-    const user = await User.findById(req.user._id);
-    const attendance = await Attendace.find({courseId:req.query.course_id});
-    const att_dates = attendance.map(attend=> {date:attend.date});
-    console.log(att_dates)
-    res.render('individual_report_page',{
-        title:'Students Report',
-        student:student,
-        isAdmin:user.isAdmin, 
-        user_name:user.name.lastName,
-        course:course,
-        today:today
-    });
+        // Array of all lecture dates
+        const lecture_dates = attendance.map(lectures=> lectures.date);
+        // console.log(lecture_dates)
+        // Array of student's attendance dates
+        const student_dates = preAttendance.map(students_rec=> students_rec.date);
+        // console.log(student_dates)
+        // creating an empty array to store student attendance records
+        const student_att = [];
+        // for each lecture date, create a student attendance record with date set to the lecture date and status set to false;
+        lecture_dates.map((lecture)=>{
+            student_att.push({'date':lecture, 'status':false});
+        });
+        // for each student attendance date, check if that date exist in student attendance record, if it does set student attendace record status to true.
+        student_dates.map((attendance)=>{
+            student_att.map((attendance_record)=>{
+                if (attendance_record.date.getTime() == attendance.getTime()){
+                    attendance_record.status = true;
+                }
+            });
+        });
+        // display the results
+        // console.log(student_att);
+
+        res.render('individual_report_page',{
+            title:'Students Report',
+            student:student,
+            isAdmin:user.isAdmin, 
+            user_name:user.name.lastName,
+            course:course,
+            today:today,
+            student_attendance:student_att
+        });
+    } catch (err) {
+        console.log(err);
+    }
+    
 });
 
-//Getting past records for a each student
+//Getting past records for each student
 router.get('/records/:id',async(req,res)=>{
     try {
         const user = await User.findById(req.user._id);
@@ -308,8 +337,8 @@ router.get('/records/:id',async(req,res)=>{
         students:students,
         attendances:attendance
     });
-    } catch (error) {
-        throw err;
+    } catch (err) {
+        console.log(err);
     }
     
 });
@@ -333,8 +362,8 @@ router.get('/records_spec/:id',async(req,res)=>{
         attendances:attendance,
         att_per_date:attendancePerDate
     });
-    } catch (error) {
-        throw err;
+    } catch (err) {
+        console.log(err);
     }
     
 });
