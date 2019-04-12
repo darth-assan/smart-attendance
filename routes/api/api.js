@@ -95,9 +95,18 @@ router.post('/student/login',(req,res)=>{
 });
 
 // logging attendance in db
-router.put('/student/attendace/',(req,res)=>{
+router.post('/student/attendace/',(req,res)=>{
+    // Getting today's date
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = mm + '-' + dd + '-' + yyyy;
+
     Attendace.findOneAndUpdate({
-        courseId:req.query.courseId},
+        courseId:req.query.courseId,
+        date:today
+    },
         { $push: { students: req.query.studentId } 
     })
     .then(data=>{

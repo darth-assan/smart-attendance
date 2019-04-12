@@ -153,11 +153,9 @@ router.get('/attendance_session/:id/stats',async(req,res)=>{
         const user = await User.findById(req.user._id);
         const course = await Course.findById(req.params.id);
         const attendance = await Attendace.findOne({date: new Date(today), courseId: req.params.id});
-        const preStudents = Student.find({ _id: { $in:attendanceIds}});
-        const abStudents = Student.find({ _id: { $nin:attendanceIds},courses: { $in: [req.params.id]}});
-
         const attendanceIds = attendance.students.map( student => student );
-   
+        const preStudents = await Student.find({ _id: { $in:attendanceIds}});
+        const abStudents = await Student.find({ _id: { $nin:attendanceIds},courses: { $in: [req.params.id]}});
 
         res.render('current_session',{
             title:'Attendance Session',
