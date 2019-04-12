@@ -6,12 +6,12 @@ const studentSchema = mongoose.Schema({
         firstName:{
             type:String,
             require:[true, "can't be blank"],
-            lowercase: true
+            capitalize: true
         },
         lastName:{
             type:String,
             require:[true, "can't be blank"],
-            lowercase: true
+            capitalize: true
         }
         
     },

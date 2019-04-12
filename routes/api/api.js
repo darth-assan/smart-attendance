@@ -71,7 +71,7 @@ router.post('/student/login',(req,res)=>{
         return res.status(400).send('Missing parameters: studentId and PIN')
     }
 
-    Student.findOne({studentId:req.body.studentId})
+    Student.findOne({studentIdrs:req.body.studentId})
     .then(data=>{
         if(data == null){
             console.log("user do not exists")

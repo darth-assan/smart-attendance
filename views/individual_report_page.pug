@@ -1,0 +1,47 @@
+extends layout
+
+block content
+     .my-3.my-md-5 
+        .container
+            .col-md-12
+                h1 Student Report Page
+                != messages('message',locals)
+                .row
+                    .col-12
+                        .card.p-3
+                            .d-flex.align-items-center
+                                .stamp.stamp-md.bg-blue.mr-3
+                                    i.fe.fe-paperclip
+                                div.text-left.col-md-9
+                                    h4.m-0
+                                        div= course.code
+                                        small= course.title
+                                div.text-right.col-md-2
+                                    h4.m-0
+                                        small= today
+                .row
+                    .col-4
+                        .col-md-12
+                            .card
+                                .card-body.p-3.text-center
+                                        .text-right.text-green
+                                            | Student Details
+                                        .h1.m-2.text-capitalize= student.name.firstName + " " + student.name.lastName
+                                        .h3.m-1= student.studentId
+                                        .text-muted.mb-4= student.email
+                                
+        
+                    .col-lg-8
+                        table.table.table-bordered.table-dark
+                            thead
+                                tr
+                                    th.w-1 # 
+                                    th(scope='col') Date
+                                    th(scope='col') Status
+                            tbody
+                                tr
+                                    th(scope='row') 1
+                                    td Mark
+                                    td Otto
+
+                        

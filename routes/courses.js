@@ -157,7 +157,7 @@ router.get('/attendance_session/:id/stats',async(req,res)=>{
 
     Student.find({ _id: { $in:attendanceIds}},(err,preStudents)=>{
         if (err) throw err
-        Student.find({ _id: { $nin:attendanceIds}},(err,abStudents)=>{
+        Student.find({ _id: { $nin:attendanceIds},courses: { $in: [req.params.id]}},(err,abStudents)=>{
             if (err) throw err
             res.render('current_session',{
                 title:'Attendance Session',
@@ -265,7 +265,79 @@ router.post('/delete_course/:id',(req,res)=>{
         req.flash('success','Course Successfully Deleted')
         res.redirect('/users/admin/?='+req.user.id)
     });
-})
+});
+
+//Get individual attendance records
+router.get('/students/report/:id',async (req,res)=>{
+    // Getting today's date
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = mm + '/' + dd + '/' + yyyy;
+
+    const course = await Course.findById(req.query.course_id);
+    const student = await Student.findById(req.params.id);
+    const user = await User.findById(req.user._id);
+    const attendance = await Attendace.find({courseId:req.query.course_id});
+    const att_dates = attendance.map(attend=> {date:attend.date});
+    console.log(att_dates)
+    res.render('individual_report_page',{
+        title:'Students Report',
+        student:student,
+        isAdmin:user.isAdmin, 
+        user_name:user.name.lastName,
+        course:course,
+        today:today
+    });
+});
+
+//Getting past records for a each student
+router.get('/records/:id',async(req,res)=>{
+    try {
+        const user = await User.findById(req.user._id);
+        const course = await Course.findById(req.params.id);
+        const attendance = await Attendace.find({courseId:req.params.id});
+        const students = await Student.find({ courses: { $in: [req.params.id]}});
+
+    res.render('records',{
+        title:"Records",
+        isAdmin:user.isAdmin, 
+        course:course,
+        user_name:user.name.lastName,
+        students:students,
+        attendances:attendance
+    });
+    } catch (error) {
+        throw err;
+    }
+    
+});
+
+//Getting past records for a course per date
+router.get('/records_spec/:id',async(req,res)=>{
+
+    try {
+        const user = await User.findById(req.user._id);
+        const course = await Course.findById(req.params.id);
+        const attendance = await Attendace.find({courseId:req.params.id});
+        const attendancePerDate = await Attendace.findOne({courseId:req.params.id,date:req.query.date});
+        const students = await Student.find({ courses: { $in: [req.params.id]}});
+
+    res.render('records_specified',{
+        title:"Records",
+        isAdmin:user.isAdmin, 
+        course:course,
+        user_name:user.name.lastName,
+        students:students,
+        attendances:attendance,
+        att_per_date:attendancePerDate
+    });
+    } catch (error) {
+        throw err;
+    }
+    
+});
 
 
 module.exports = router;

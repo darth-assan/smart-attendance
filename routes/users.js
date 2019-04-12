@@ -9,6 +9,8 @@ const passport = require('passport');
 let User = require('../models/user');
 // bring in courses model
 let Course = require('../models/course');
+// bring in attendance model
+let Attendance = require('../models/attendance');
 
 // Login Process
 router.post('/login',
@@ -251,18 +253,16 @@ router.delete('/delete/:id', function(req,res){
 });
 
 // Get user dashboard
-router.get('/dashboard',(req,res)=>{
-    User.findById(req.user._id,(err,data)=>{
-        if(err) throw new Error("BROKEN");
-            Course.find({assigned:req.user._id},(err,data1)=>{
-                if (err) throw err
-                res.render('dashboard',{
-                    title: 'Dashboard',
-                    isAdmin:data.isAdmin,
-                    user_name:data.name.lastName,
-                    courses:data1
-                });
-            });
+router.get('/dashboard', async (req,res)=>{
+
+    const user = await  User.findById(req.user._id);
+    const courses = await Course.find({assigned:req.user._id});
+
+    res.render('dashboard',{
+        title: 'Dashboard',
+        isAdmin:user.isAdmin,
+        user_name:user.name.lastName,
+        courses:courses
     });
 });
 

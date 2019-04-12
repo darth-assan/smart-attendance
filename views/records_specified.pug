@@ -5,14 +5,14 @@ block content
         .container  
             .page-header
                 .page-title
-                    h1 Attendance Session
+                    h1 Attendance Records
                     
             != messages('message',locals)
             .row
                 .col-12
                     .card.p-3
                         .d-flex.align-items-center
-                            .stamp.stamp-md.bg-blue.mr-3
+                            .stamp.stamp-md.bg-blue.mr-0
                                 i.fe.fe-paperclip
                             div.text-left.col-md-9
                                 h4.m-0
@@ -20,45 +20,41 @@ block content
                                     small= course.title
                             div.text-right.col-md-2
                                 h4.m-0
-                                    small= today
-            .row.row-cards
+                                    div  Records on:
+                                    small= att_per_date.date.toDateString()
 
-                .col-md-4
-                    .card
-                        .card-body.p-3.text-center
-                            .text-right
-                                .h-5
-                                //- a.btn.btn-sm.btn-rounded.btn-teal(href="#") view
-                                //-     i.fe.fe-external-link
-                            .h-2
-                            .h1.m-0= total_students
-                            .text-muted.mb-4 Total number of students
-                .col-md-4
-                    .card
-                        .card-status.card-status-left.bg-green
-                        .card-body.p-3.text-center
-                            .text-right
-                                a.btn.btn-sm.btn-rounded.btn-green(href="/courses/attendance_session/" + course._id + "/stats") view
-                                    i.fe.fe-external-link.ml-2
-                            .h-2
-                            .h1.m-0= total_students_present
-                            .text-muted.mb-4 Students present
-                .col-md-4
-                    .card
-                        .card-status.card-status-left.bg-red
-                        .card-body.p-3.text-center
-                            .text-right
-                                a.btn.btn-sm.btn-rounded.btn-red(href="/courses/attendance_session/" + course._id + "/stats") view
-                                    i.fe.fe-external-link.ml-2
-                            .h-2
-                            .h1.m-0= total_students - total_students_present
-                            .text-muted.mb-4 Students absent
-
-
+                .col-lg-4
+                    .card.p-3
+                        .d-flex.align-items-center
+                            span.stamp.stamp-md.bg-info.mr-3
+                                    i.fe.fe-users
+                            div
+                                    h4.m-0
+                                        =   students.length
+                                    small.text-muted Total Number of Students
+                .col-lg-4
+                    .card.p-3
+                        .d-flex.align-items-center
+                            span.stamp.stamp-md.bg-lime.mr-3
+                                    i.fe.fe-user-check
+                            div
+                                    h4.m-0
+                                        =   att_per_date.students.length
+                                    small.text-muted Were present
+                .col-lg-4
+                    .card.p-3
+                        .d-flex.align-items-center
+                            span.stamp.stamp-md.bg-red.mr-3
+                                    i.fe.fe-user-x
+                            div
+                                    h4.m-0
+                                        =   students.length - att_per_date.students.length
+                                    small.text-muted Were absent
+                                    
                 .col-lg-12
                     .card
                         .card-header
-                            h3.card-title Attendance Statistics
+                            h3.card-title Students
                         .table-responsive
                             table.table.card-table.table-striped.table-vcenter
                                 thread

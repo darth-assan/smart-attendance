@@ -50,17 +50,21 @@ body
                             //-             //-     span.custom-switch-indicator
                             //-             //-     span.custom-switch-description Authorize Attendance
                             //-             input.btn.btn-teal.btn-sm(type='submit' value="Authorize Attendance")
-
                             .col-lg.order-lg-first
                                 ul.nav.nav-tabs.border-0.flex-column.flex-lg-row
                                     li.nav-item
-                                        a.nav-link(class=(title !== null ? "active" : undefined) href='/users/dashboard')
+                                        a.nav-link(class=(title == "Dashboard" ? "active" : undefined) href='/users/dashboard')
                                             i.fe.fe-home
                                             |  Home
-                                    //- li.nav-item
-                                    //-     a.nav-link(class=(title == "Add Courses" ? "active" : undefined) href='/users/add_courses')
-                                    //-         i.fe.fe-check-square
-                                    //-         | Add Courses
+                                    -if(title === "Records")
+                                        li.nav-item
+                                            a.nav-link(href="javascript:void(0)" data-toggle="dropdown" class=(title == "Records" ? "active" : undefined))
+                                                i.fe.fe-folder
+                                                | Attendance Records
+                                            .dropdown-menu.dropdown-menu-arrow
+                                                each attendance,i in attendances
+                                                    a.dropdown-item(href="/courses/records_spec/" + attendance.courseId + "/?date="+ attendance.date)= attendance.date.toDateString()
+
                                
             block content
         include includes/footer.pug
