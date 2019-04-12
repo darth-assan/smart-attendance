@@ -42,7 +42,7 @@ block content
                                 each attendance,i in student_attendance
                                     tr
                                         th(scope='row') Week 
-                                            = i
+                                            = i+1
                                         td(scope='row')= attendance.date.toDateString()
                                         -if (attendance.status == true)
                                             td(scope='row')
