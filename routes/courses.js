@@ -121,7 +121,7 @@ router.post('/attendance_session/:id',(req,res)=>{
                     }
                 });
             }else{
-                req.flash('warning','Session Already Exit');
+                req.flash('warning','Session already exists');
                 res.redirect('/users/dashboard/?_id='+ req.user._id);
             }
         }else{
@@ -304,6 +304,8 @@ router.get('/students/report/:id',async (req,res)=>{
         // display the results
         // console.log(student_att);
 
+        const present = student_att.filter(length => length.status == true);
+
         res.render('individual_report_page',{
             title:'Students Report',
             student:student,
@@ -311,6 +313,7 @@ router.get('/students/report/:id',async (req,res)=>{
             user_name:user.name.lastName,
             course:course,
             today:today,
+            present:present.length,
             student_attendance:student_att
         });
     } catch (err) {
