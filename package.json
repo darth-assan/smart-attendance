@@ -1,5 +1,5 @@
 {
-  "name": "verification-using-fingerprint",
+  "name": "Smart Attendance",
   "version": "1.0.0",
   "description": "This project is aimed at using fingerprint sensors of smart devices to authenticate yourself as present at a lecture.",
   "main": "app.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arthur-assan/Verification-using-fingerprint.git"
+    "url": "git+https://github.com/arthur-assan/smart-attendance.git"
   },
   "keywords": [
     "fingerprint",
@@ -22,9 +22,9 @@
   "author": "David Arthur",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/arthur-assan/Verification-using-fingerprint/issues"
+    "url": "https://github.com/arthur-assan/smart-attendance/issues"
   },
-  "homepage": "https://github.com/arthur-assan/Verification-using-fingerprint#readme",
+  "homepage": "https://github.com/arthur-assan/smart-attendance#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
