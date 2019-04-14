@@ -1,10 +1,10 @@
 {
-  "name": "Smart Attendance",
+  "name": "smart_attendance",
   "version": "1.0.0",
   "description": "This project is aimed at using fingerprint sensors of smart devices to authenticate yourself as present at a lecture.",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
