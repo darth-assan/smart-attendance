@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session');
+const PORT = process.env.PORT || 3000
 // const morgan = require('morgan'); For development purposes
-const PORT = process.env.PORT || 5000
 
 // Database connection
 const config = require('./config/database')
@@ -100,7 +100,4 @@ app.use('/courses',courses);
 app.use('/api',api);
 
 // Start Server
-// app.listen(3000,()=>{
-//     console.log('Server Started on port 3000....');
-// });
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
