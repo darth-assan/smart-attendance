@@ -60,8 +60,20 @@ router.post('/student/course/registeration', async(req,res)=>{
     }
 });
 
+//Get courses for a student
+router.get('/student/courses/registered/:id', async(req,res)=>{
+    try {
+        const regCourses = await Student.findOne({_id:req.params.id});
+        const courseDetails = await Course.find({_id:{$in : regCourses.courses}});
+        res.send(courseDetails);
+    } catch (error) {
+        console.log(error);
+    }
+   
+});
+
 //Get all courses
-router.get('/student/add_courses',(req,res)=>{
+router.get('/student/courses/all',(req,res)=>{
     Course.find({},(err,data)=>{
         if(err) throw err
         res.send(data)
