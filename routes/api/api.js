@@ -8,7 +8,7 @@ let Course = require('../../models/course');
 let Attendace = require('../../models/attendance');
 
 // Student registeration 
-router.post('/student/register',(req,res)=>{
+router.post('/student/register', async (req,res)=>{
     if(!req.body){
         return res.status(400),send('Request Body Required');
     }
@@ -28,7 +28,6 @@ router.post('/student/register',(req,res)=>{
         studentId:studentId,
         pin:pin
     });
-
     bcrypt.hash(newStudent.pin,10,function(err,hash){
         if(err) throw err
         newStudent.pin = hash;
@@ -47,13 +46,18 @@ router.post('/student/register',(req,res)=>{
     });
 });
 
-// Register courses
-router.post('/student/add_courses/',(req,res)=>{
-    Student.findByIdAndUpdate({_id:req.query._id},{courses:req.body.courses},(err,data)=>{
-        if(err) throw err
-        console.log('course added successfully');
-        res.status(201).send(data);
-    });
+// Student course registeration
+router.post('/student/course/registeration', async(req,res)=>{
+    try {
+        let studentId = req.body.studentId;
+        let courses = req.body.courses;
+
+        const studentCourses = await Student.findOneAndUpdate({studentId:studentId},{courses:courses});
+        res.status(201).send(studentCourses);
+        console.log('new courses added successfully.');
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 //Get all courses
