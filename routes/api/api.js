@@ -52,7 +52,11 @@ router.get('/student/:id', async(req,res)=>{
         let id = req.params.id;
 
         const student = await Student.findById(id);
-        res.status(201).send(student);
+        if(student === null){
+            res.status(404).end();
+        }else{
+            res.status(200).send(student);
+        }
     } catch(error){
         console.log(error);
     }
