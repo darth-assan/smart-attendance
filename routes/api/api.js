@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
 
-// bring in db models
+// Bring in db models
 let Student = require('../../models/student');
 let Course = require('../../models/course');
 let Attendace = require('../../models/attendance');
@@ -44,6 +44,18 @@ router.post('/student/register', async (req,res)=>{
             res.status(500).json(err)
         });
     });
+});
+
+// Get student details
+router.get('/student/:id', async(req,res)=>{
+    try{
+        let id = req.params.id;
+
+        const student = await Student.findById(id);
+        res.status(201).send(student);
+    } catch(error){
+        console.log(error);
+    }
 });
 
 // Student course registeration
